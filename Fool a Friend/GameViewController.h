@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class GameViewController;
+@protocol GameViewControllerDelegate <NSObject>
 
+
+
+@end
 @interface GameViewController : UIViewController
 
 @end

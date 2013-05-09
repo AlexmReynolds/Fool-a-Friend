@@ -7,6 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA3173B35F100E155FC /* Communicator.m */; };
+		E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */; };
+		E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */; };
+		E7D5EFAC173B38B700E155FC /* Action_Man.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7D5EFAB173B38B700E155FC /* Action_Man.ttf */; };
+		E7D5EFAF173B3A5C00E155FC /* Card.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFAE173B3A5C00E155FC /* Card.m */; };
+		E7D5EFB4173B3C5E00E155FC /* MatchMakingClient.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */; };
+		E7D5EFB5173B3C6800E155FC /* MatchMakingServer.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFB1173B3C5B00E155FC /* MatchMakingServer.m */; };
+		E7D5EFB6173B3CC100E155FC /* Fool a Friend-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9ECECCE173AE0330093191E /* Fool a Friend-Info.plist */; };
+		E7D5EFB9173B3E6200E155FC /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFB8173B3E6200E155FC /* Stack.m */; };
 		E9ECECC7173AE0330093191E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC6173AE0330093191E /* UIKit.framework */; };
 		E9ECECC9173AE0330093191E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC8173AE0330093191E /* Foundation.framework */; };
 		E9ECECCB173AE0330093191E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECCA173AE0330093191E /* CoreGraphics.framework */; };
@@ -34,6 +43,21 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E7D5EFA2173B35F100E155FC /* Communicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Communicator.h; sourceTree = "<group>"; };
+		E7D5EFA3173B35F100E155FC /* Communicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Communicator.m; sourceTree = "<group>"; };
+		E7D5EFA5173B383F00E155FC /* NSData+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+FoolAFriend.h"; sourceTree = "<group>"; };
+		E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+FoolAFriend.m"; sourceTree = "<group>"; };
+		E7D5EFA8173B388500E155FC /* UIFont+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FoolAFriend.h"; sourceTree = "<group>"; };
+		E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIFont+FoolAFriend.m"; sourceTree = "<group>"; };
+		E7D5EFAB173B38B700E155FC /* Action_Man.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Action_Man.ttf; sourceTree = "<group>"; };
+		E7D5EFAD173B3A5C00E155FC /* Card.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Card.h; sourceTree = "<group>"; };
+		E7D5EFAE173B3A5C00E155FC /* Card.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Card.m; sourceTree = "<group>"; };
+		E7D5EFB0173B3C5B00E155FC /* MatchMakingServer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchMakingServer.h; sourceTree = "<group>"; };
+		E7D5EFB1173B3C5B00E155FC /* MatchMakingServer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchMakingServer.m; sourceTree = "<group>"; };
+		E7D5EFB2173B3C5B00E155FC /* MatchMakingClient.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MatchMakingClient.h; sourceTree = "<group>"; };
+		E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchMakingClient.m; sourceTree = "<group>"; };
+		E7D5EFB7173B3E6200E155FC /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
+		E7D5EFB8173B3E6200E155FC /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
 		E9ECECC3173AE0330093191E /* Fool a Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fool a Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9ECECC6173AE0330093191E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E9ECECC8173AE0330093191E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -138,6 +162,7 @@
 		E9ECECCD173AE0330093191E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				E7D5EFAB173B38B700E155FC /* Action_Man.ttf */,
 				E9ECECCE173AE0330093191E /* Fool a Friend-Info.plist */,
 				E9ECECCF173AE0330093191E /* InfoPlist.strings */,
 				E9ECECD2173AE0330093191E /* main.m */,
@@ -152,8 +177,14 @@
 		E9ECECEC173AE03B0093191E /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				E7D5EFB0173B3C5B00E155FC /* MatchMakingServer.h */,
+				E7D5EFB1173B3C5B00E155FC /* MatchMakingServer.m */,
+				E7D5EFB2173B3C5B00E155FC /* MatchMakingClient.h */,
+				E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */,
 				E9ECED15173AE2AA0093191E /* Packet.h */,
 				E9ECED16173AE2AA0093191E /* Packet.m */,
+				E7D5EFA2173B35F100E155FC /* Communicator.h */,
+				E7D5EFA3173B35F100E155FC /* Communicator.m */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -161,12 +192,16 @@
 		E9ECECF0173AE0620093191E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E7D5EFAD173B3A5C00E155FC /* Card.h */,
+				E7D5EFAE173B3A5C00E155FC /* Card.m */,
 				E9ECED0A173AE1FB0093191E /* Game.h */,
 				E9ECED0B173AE1FB0093191E /* Game.m */,
 				E9ECED0D173AE2050093191E /* Player.h */,
 				E9ECED0E173AE2050093191E /* Player.m */,
 				E9ECED10173AE22E0093191E /* Deck.h */,
 				E9ECED11173AE22E0093191E /* Deck.m */,
+				E7D5EFB7173B3E6200E155FC /* Stack.h */,
+				E7D5EFB8173B3E6200E155FC /* Stack.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -197,6 +232,10 @@
 		E9ECED18173AE2B20093191E /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				E7D5EFA5173B383F00E155FC /* NSData+FoolAFriend.h */,
+				E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */,
+				E7D5EFA8173B388500E155FC /* UIFont+FoolAFriend.h */,
+				E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -258,6 +297,8 @@
 				E9ECECDD173AE0330093191E /* Default-568h@2x.png in Resources */,
 				E9ECECE0173AE0330093191E /* MainStoryboard_iPhone.storyboard in Resources */,
 				E9ECECE3173AE0330093191E /* MainStoryboard_iPad.storyboard in Resources */,
+				E7D5EFAC173B38B700E155FC /* Action_Man.ttf in Resources */,
+				E7D5EFB6173B3CC100E155FC /* Fool a Friend-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -282,6 +323,13 @@
 				E9ECED0F173AE2050093191E /* Player.m in Sources */,
 				E9ECED12173AE22E0093191E /* Deck.m in Sources */,
 				E9ECED17173AE2AA0093191E /* Packet.m in Sources */,
+				E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */,
+				E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */,
+				E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */,
+				E7D5EFAF173B3A5C00E155FC /* Card.m in Sources */,
+				E7D5EFB4173B3C5E00E155FC /* MatchMakingClient.m in Sources */,
+				E7D5EFB5173B3C6800E155FC /* MatchMakingServer.m in Sources */,
+				E7D5EFB9173B3E6200E155FC /* Stack.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,8 +425,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Full of it/Fool a Friend-Prefix.pch";
-				INFOPLIST_FILE = "Full of it/Fool a Friend-Info.plist";
+				GCC_PREFIX_HEADER = "Fool a Friend/Fool a Friend-Prefix.pch";
+				INFOPLIST_FILE = "Fool a Friend/Fool a Friend-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "Fool a Friend";
 				WRAPPER_EXTENSION = app;
@@ -389,8 +437,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Full of it/Fool a Friend-Prefix.pch";
-				INFOPLIST_FILE = "Full of it/Fool a Friend-Info.plist";
+				GCC_PREFIX_HEADER = "Fool a Friend/Fool a Friend-Prefix.pch";
+				INFOPLIST_FILE = "Fool a Friend/Fool a Friend-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				PRODUCT_NAME = "Fool a Friend";
 				WRAPPER_EXTENSION = app;

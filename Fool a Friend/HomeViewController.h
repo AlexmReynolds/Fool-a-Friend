@@ -7,7 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "HostViewController.h"
+#import "JoinViewController.h"
+#import "GameViewController.h"
 
-@interface HomeViewController : UIViewController
+@interface HomeViewController : UIViewController<HostViewControllerDelegate, JoinViewControllerDelegate, GameViewControllerDelegate>{
+    BOOL _buttonsEnabled;
+}
+
+- (IBAction)goHostAction:(id)sender;
+- (IBAction)goJoinAction:(id)sender;
 
 @end
