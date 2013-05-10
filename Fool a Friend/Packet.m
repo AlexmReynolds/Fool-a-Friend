@@ -94,8 +94,9 @@ const size_t PACKET_HEADER_SIZE = 10;
         
         for (int t = 0; t <[array count]; ++t){
             Card *card = [array objectAtIndex:t];
-            [data ar_appendInt8:card.suit];
-            [data ar_appendInt8:card.value];
+            [data ar_appendString:card.question];
+            [data ar_appendString:card.answer];
+            [data ar_appendInt8:card.category];
         }
     }];
 }
@@ -113,13 +114,16 @@ const size_t PACKET_HEADER_SIZE = 10;
         
         NSMutableArray *array = [NSMutableArray arrayWithCapacity:numberOfCards];
         for (int t = 0; t < numberOfCards; ++t){
-            int suit = [data ar_int8AtOffset:offset];
-            offset +=1;
+            NSString *question = [data ar_stringAtOffset:offset bytesRead:&count];
+            offset += count;
             
-            int value = [data ar_int8AtOffset:offset];
-            offset +=1;
+            NSString *answer = [data ar_stringAtOffset:offset bytesRead:&count];
+            offset += count;
             
-            Card *card = [[Card alloc] initWithSuit:suit value:value];
+            CardCategory category =  [data ar_int8AtOffset:offset];
+            offset += 1;
+            
+            Card *card = [[Card alloc] initWithQuestion:question answer:answer andCategory:category];
             [array addObject:card];
         }
         [cards setObject:array forKey:peerID];
