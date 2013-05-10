@@ -55,7 +55,30 @@
     }];
 }
 
-#pragma makr - HostViewDelegate Methods
+#pragma mark - JoinViewDelegate
+
+- (void) joinViewControllerDidCancel:(HostViewController *)controller{
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+-(void) joinViewController:(JoinViewController *)controller didDisconnectWithReason:(QuitReason)reason{
+    if (reason == QuitReasonConnectionDropped){
+        [self dismissViewControllerAnimated:NO completion:^{
+            [self showDisconnectedAlert];
+        }];
+    } else if (reason == QuitReasonNoNetwork){
+        [self showNoNetworkAlert];
+    }
+}
+
+-(void) joinViewController:(JoinViewController *)controller startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID{
+    
+    [self dismissViewControllerAnimated:NO completion:^{
+
+    }];
+}
+
+
+#pragma mark - HostViewDelegate Methods
 
 -(void)hostViewController:(HostViewController *)controller didEndSessionWithReason:(QuitReason)reason
 {

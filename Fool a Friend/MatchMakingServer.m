@@ -47,6 +47,7 @@
 - (NSString *) displayNameForPeerID:(NSString *)peerID{
     return [_session displayNameForPeer:peerID];
 }
+
 -(void) session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state{
     #ifdef DEBUG
         NSLog(@"MatchMakingServer: peer %@ changed state %d", peerID, state);

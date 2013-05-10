@@ -17,10 +17,18 @@
 -(void) joinViewController:(JoinViewController *)controller startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 
 @end
-@interface JoinViewController : UIViewController<MatchmakingClientDelegate>
+@interface JoinViewController : UIViewController<MatchmakingClientDelegate>{
+@private
+    MatchMakingClient *_matchmakingClient;
+    QuitReason _quitReason;
+}
 
 
+@property (weak, nonatomic) IBOutlet UIView *waitView;
 @property (nonatomic, weak) id <JoinViewControllerDelegate> delegate;
+@property (weak, nonatomic) IBOutlet UITableView *theTableView;
+@property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 
+- (IBAction)exitAction:(id)sender;
 
 @end

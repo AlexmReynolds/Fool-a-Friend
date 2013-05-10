@@ -50,10 +50,10 @@
             </objects>
             <point key="canvasLocation" x="114" y="214"/>
         </scene>
-        <!--View Controller-->
+        <!--Join View Controller-->
         <scene sceneID="9KF-WC-6Rf">
             <objects>
-                <viewController storyboardIdentifier="joinViewController" id="WpO-AY-EQ2" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="joinViewController" id="WpO-AY-EQ2" customClass="JoinViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Lca-HN-36A">
                         <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -72,7 +72,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="vSw-Aq-3IW">
-                                <rect key="frame" x="0.0" y="201" width="326" height="230"/>
+                                <rect key="frame" x="0.0" y="186" width="326" height="230"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -87,6 +87,21 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EHM-0S-kEl">
+                                <rect key="frame" x="10" y="416" width="52" height="44"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="Exit">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="exitAction:" destination="WpO-AY-EQ2" eventType="touchUpInside" id="PhY-mu-xBV"/>
+                                </connections>
+                            </button>
                             <view hidden="YES" contentMode="scaleToFill" id="fgr-Zc-a52">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="460"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -108,6 +123,11 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="nameTextField" destination="bbH-pN-a58" id="QfG-ao-kyC"/>
+                        <outlet property="theTableView" destination="vSw-Aq-3IW" id="5bb-eL-ubw"/>
+                        <outlet property="waitView" destination="fgr-Zc-a52" id="Ksz-IH-0E5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1Ky-mT-ini" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -224,6 +244,14 @@
                 <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="theTableView" candidateClass="UITableView"/>
+            </relationships>
+        </class>
+        <class className="JoinViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/JoinViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="theTableView" candidateClass="UITableView"/>
+                <relationship kind="outlet" name="waitView" candidateClass="UIView"/>
             </relationships>
         </class>
     </classes>

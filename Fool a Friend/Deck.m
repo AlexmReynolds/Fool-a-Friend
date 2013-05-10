@@ -12,17 +12,21 @@
 
 -(void) setUpCards
 {
-    for(Suit suit = SuitClubs; suit <= SuitSpades; ++suit){
-        for (int value = CardAce; value <= CardKing; ++value){
-            Card *card = [[Card alloc] initWithSuit:suit value:value];
-            [_cards addObject:card];
-        }
+    NSDictionary *card1 = [[NSDictionary alloc] initWithObjectsAndKeys:@"What is 7 * 7?",@"question",@"49",@"answer",Events,@"category", nil];
+    NSDictionary *card2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"What is Godzilla about?",@"question",@"Movie about monster",@"answer",Movies,@"category", nil];
+    NSDictionary *card3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"It is illegal for a dog to?",@"question",@"Sleep indoors",@"answer",Laws,@"category", nil];
+    
+    NSArray *cards = [NSArray arrayWithObjects:card1,card2,card3, nil];
+    
+    for (NSDictionary *basecard in cards){
+        Card *card = [[Card alloc] initWithQuestion:[basecard objectForKey:@"question"] answer:[basecard objectForKey:@"answer"] andCategory:(CardCategory)[basecard valueForKey:@"category"]];
+        [_cards addObject:card];
     }
 }
 -(id) init{
     self = [super init];
     if (self){
-        _cards = [NSMutableArray arrayWithCapacity:52];
+        _cards = [NSMutableArray arrayWithCapacity:200];
         [self setUpCards];
     }
     return self;
@@ -30,7 +34,7 @@
 -(void) shuffle
 {
     NSUInteger count = [_cards count];
-    NSMutableArray *shuffled = [NSMutableArray arrayWithCapacity:52];
+    NSMutableArray *shuffled = [NSMutableArray arrayWithCapacity:200];
     
     for (int t=0; t <count; ++t){
         int i = arc4random() % [self cardsRemaining];

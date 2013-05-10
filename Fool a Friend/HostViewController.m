@@ -27,7 +27,7 @@
 {
     [super viewDidLoad];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self.view action:@selector(resignFirstResponder)];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self.nameTextField action:@selector(resignFirstResponder)];
     tap.cancelsTouchesInView = NO;
     [self.view addGestureRecognizer:tap];
 	// Do any additional setup after loading the view.

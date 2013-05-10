@@ -9,22 +9,24 @@
 #import "Card.h"
 
 @implementation Card
-@synthesize suit = _suit;
-@synthesize value = _value;
+@synthesize question = _question;
+@synthesize answer = _answer;
+@synthesize category = _category;
 @synthesize isTurnedOver = _isTurnedOver;
 
--(id) initWithSuit:(Suit)suit value:(int)value
+-(id) initWithQuestion:(NSString *)question answer:(NSString *)answer andCategory:(CardCategory)category
 {
-    NSAssert (value >= CardAce && value <= CardKing, @"Invalid card value");
+    NSAssert (question.length > 0 && answer.length > 0, @"Invalid card value");
     self = [super init];
     if (self){
-        _suit = suit;
-        _value = value;
+        _question = question;
+        _answer = answer;
+        _category = category;
     }
     return self;
 }
 - (BOOL)isEqualToCard:(Card *)otherCard
 {
-	return (otherCard.suit == self.suit && otherCard.value == self.value);
+	return (otherCard.question == self.question && otherCard.answer == self.answer);
 }
 @end
