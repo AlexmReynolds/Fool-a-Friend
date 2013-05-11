@@ -51,6 +51,7 @@
         
         NSString *name = [data ar_stringAtOffset:offset bytesRead:&count];
         offset += count;
+        
         int position = [data ar_int8AtOffset:offset];
         offset +=1;
         

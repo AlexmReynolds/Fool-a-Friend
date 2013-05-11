@@ -40,7 +40,7 @@
 
     NSDictionary *players = [self.game getPlayers];
     int numberOfPlayers = [[players allKeys]count];
-    _nameLabels = [[NSMutableArray alloc] initWithCapacity:numberOfPlayers];
+    _nameLabels = [NSMutableDictionary dictionaryWithCapacity:numberOfPlayers];
     int idx = 0;
     int labelHeight = 20;
     int labelPadding = 5;
@@ -48,14 +48,14 @@
         Player *player = [players objectForKey:peerID];
         int YOffset = ((labelHeight+labelPadding) * idx);
         NSLog(@"adding label %@", player.name);
-        UIView *playerNameView = [[UIView alloc] initWithFrame:CGRectMake(10 + YOffset, 10, 100, labelHeight)];
+        UIView *playerNameView = [[UIView alloc] initWithFrame:CGRectMake(10, 10 + YOffset, 100, labelHeight)];
         UILabel *playerName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, playerNameView.bounds.size.height)];
         playerName.text = player.name;
         UILabel *playerPoints = [[UILabel alloc] initWithFrame:CGRectMake(80, 0, 20, playerNameView.bounds.size.height)];
         playerPoints.text = [NSString stringWithFormat:@"%i", player.points];
         [playerNameView addSubview:playerName];
         [playerNameView addSubview:playerPoints];
-        
+        [_nameLabels setObject:playerNameView forKey:player.peerID];
         [self.view addSubview:playerNameView];
         idx++;
     }

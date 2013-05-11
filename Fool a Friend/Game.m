@@ -61,6 +61,7 @@
     
     int index = 0;
     for (NSString *peerID in clients){
+        NSLog(@"Assign player position %i", index);
         Player *player = [[Player alloc] init];
         player.peerID = peerID;
         player.position = index;
@@ -121,7 +122,7 @@
 {
     do
     {
-        _startingPlayerPosition = arc4random() % 4;
+        _startingPlayerPosition = arc4random() % [_players count];
     }
     while ([self playerAtPosition:_startingPlayerPosition] == nil);
     _activePlayerPosition = _startingPlayerPosition;

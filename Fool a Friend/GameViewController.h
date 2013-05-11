@@ -16,7 +16,7 @@
 
 @end
 @interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate>{
-    NSMutableArray *_nameLabels;
+    NSMutableDictionary *_nameLabels;
 }
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
