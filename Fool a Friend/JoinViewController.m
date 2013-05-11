@@ -72,6 +72,7 @@
     _quitReason = QuitReasonNoNetwork;
 }
 -(void) matchmakingClient:(MatchMakingClient *)client didConnectToServer:(NSString *)peerID{
+    NSLog(@"did connect");
     NSString *name = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ([name length] == 0){
         name = _matchmakingClient.session.displayName;
@@ -106,7 +107,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if(_matchmakingClient != nil){
-        [self.view addSubview:self.waitView];
+        self.waitView.hidden = NO;
         NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
         [_matchmakingClient connectToServerWithPeerID:peerID];
     }
@@ -120,6 +121,7 @@
     [self setWaitView:nil];
     [self setTheTableView:nil];
     [self setNameTextField:nil];
+    [self setCenterLabel:nil];
     [super viewDidUnload];
 }
 - (IBAction)exitAction:(id)sender {

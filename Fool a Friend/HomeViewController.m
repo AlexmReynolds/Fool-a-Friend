@@ -9,6 +9,7 @@
 #import "HomeViewController.h"
 #import "HostViewController.h"
 #import "JoinViewController.h"
+#import "Game.h"
 
 @interface HomeViewController ()
 
@@ -71,12 +72,28 @@
 }
 
 -(void) joinViewController:(JoinViewController *)controller startGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID{
+    _performAnimation = NO;
     
     [self dismissViewControllerAnimated:NO completion:^{
-
+        _performAnimation = YES;
+        
+        [self startGameWithBlock:^(Game *game) {
+            [game startClientGameWithSession:session playerName:name server:peerID];
+        }];
     }];
 }
 
+- (void) startGameWithBlock:(void (^)(Game *))block{
+    GameViewController *gameViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"gameViewController"];
+    gameViewController.delegate =self;
+    
+    [self presentViewController:gameViewController animated:NO completion:^{
+        Game *game = [[Game alloc] init];
+        gameViewController.game = game;
+        game.delegate = gameViewController;
+        block(game);
+    }];
+}
 
 #pragma mark - HostViewDelegate Methods
 
@@ -88,7 +105,15 @@
 }
 -(void)hostViewController:(HostViewController *)controller startGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients
 {
+    _performAnimation = NO;
     
+    [self dismissViewControllerAnimated:NO completion:^{
+        _performAnimation = YES;
+        
+        [self startGameWithBlock:^(Game *game) {
+            [game startServerGameWithSession:session playerName:name clients:clients];
+        }];
+    }];
 }
 
 -(void)hostViewControllerDidCancel:(HostViewController *)controller
@@ -122,6 +147,15 @@
                                           } completion:nil];
                      }];
     
+}
+#pragma mark - GameDelegate
+
+-(void) gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason{
+    [self dismissViewControllerAnimated:NO completion:^{
+        if (reason == QuitReasonConnectionDropped){
+            [self showDisconnectedAlert];
+        }
+    }];
 }
 
 #pragma mark - Alerts

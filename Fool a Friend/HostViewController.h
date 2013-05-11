@@ -25,10 +25,12 @@
 
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
 @property (weak, nonatomic) IBOutlet UITableView *theTableView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *centerLabel;
 
 @property (weak, nonatomic) IBOutlet UIView *loadingView;
 @property (nonatomic, weak) id <HostViewControllerDelegate> delegate;
 
 - (IBAction)exitAction:(id)sender;
+- (IBAction)beginAction:(id)sender;
 
 @end

@@ -16,6 +16,8 @@
 		E7D5EFB5173B3C6800E155FC /* MatchMakingServer.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFB1173B3C5B00E155FC /* MatchMakingServer.m */; };
 		E7D5EFB6173B3CC100E155FC /* Fool a Friend-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E9ECECCE173AE0330093191E /* Fool a Friend-Info.plist */; };
 		E7D5EFB9173B3E6200E155FC /* Stack.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFB8173B3E6200E155FC /* Stack.m */; };
+		E7D5EFBC173E1BBD00E155FC /* PacketSignInResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFBB173E1BBD00E155FC /* PacketSignInResponse.m */; };
+		E7D5EFBF173E1D4E00E155FC /* PacketServerReady.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFBE173E1D4D00E155FC /* PacketServerReady.m */; };
 		E9ECECC7173AE0330093191E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC6173AE0330093191E /* UIKit.framework */; };
 		E9ECECC9173AE0330093191E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC8173AE0330093191E /* Foundation.framework */; };
 		E9ECECCB173AE0330093191E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECCA173AE0330093191E /* CoreGraphics.framework */; };
@@ -58,6 +60,10 @@
 		E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MatchMakingClient.m; sourceTree = "<group>"; };
 		E7D5EFB7173B3E6200E155FC /* Stack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Stack.h; sourceTree = "<group>"; };
 		E7D5EFB8173B3E6200E155FC /* Stack.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Stack.m; sourceTree = "<group>"; };
+		E7D5EFBA173E1BBD00E155FC /* PacketSignInResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketSignInResponse.h; sourceTree = "<group>"; };
+		E7D5EFBB173E1BBD00E155FC /* PacketSignInResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketSignInResponse.m; sourceTree = "<group>"; };
+		E7D5EFBD173E1D4D00E155FC /* PacketServerReady.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketServerReady.h; sourceTree = "<group>"; };
+		E7D5EFBE173E1D4D00E155FC /* PacketServerReady.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketServerReady.m; sourceTree = "<group>"; };
 		E9ECECC3173AE0330093191E /* Fool a Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fool a Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9ECECC6173AE0330093191E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E9ECECC8173AE0330093191E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -183,6 +189,10 @@
 				E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */,
 				E9ECED15173AE2AA0093191E /* Packet.h */,
 				E9ECED16173AE2AA0093191E /* Packet.m */,
+				E7D5EFBA173E1BBD00E155FC /* PacketSignInResponse.h */,
+				E7D5EFBB173E1BBD00E155FC /* PacketSignInResponse.m */,
+				E7D5EFBD173E1D4D00E155FC /* PacketServerReady.h */,
+				E7D5EFBE173E1D4D00E155FC /* PacketServerReady.m */,
 				E7D5EFA2173B35F100E155FC /* Communicator.h */,
 				E7D5EFA3173B35F100E155FC /* Communicator.m */,
 			);
@@ -330,6 +340,8 @@
 				E7D5EFB4173B3C5E00E155FC /* MatchMakingClient.m in Sources */,
 				E7D5EFB5173B3C6800E155FC /* MatchMakingServer.m in Sources */,
 				E7D5EFB9173B3E6200E155FC /* Stack.m in Sources */,
+				E7D5EFBC173E1BBD00E155FC /* PacketSignInResponse.m in Sources */,
+				E7D5EFBF173E1D4E00E155FC /* PacketServerReady.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

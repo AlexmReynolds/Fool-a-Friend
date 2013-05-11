@@ -15,5 +15,6 @@
 -(void)clientRecievedPacket:(Packet *)packet;
 @end
 @interface Communicator : NSObject
-
+-(void) sendPacketToAllClients:(Packet *)packet;
+-(void) sendPacketToServer:(Packet *)packet;
 @end

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import "Stack.h"
-
 @interface Player : NSObject
 @property (nonatomic, assign) int lastPacketNumberReceived;
 @property (nonatomic,strong,readonly) Stack *closedCards;
@@ -17,7 +16,7 @@
 @property (nonatomic) BOOL receivedResponse;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *peerID;
-
+@property (nonatomic, assign) int position;
 -(Card*)turnOverTopCard;
 -(BOOL)shouldRecycle;
 -(NSArray *)recycleCards;

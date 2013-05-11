@@ -16,6 +16,7 @@
 @synthesize closedCards = _closedCards;
 @synthesize openCards = _openCards;
 @synthesize lastPacketNumberReceived = _lastPacketNumberReceived;
+@synthesize position = _position;
 -(id) init
 {
     self =[super init];

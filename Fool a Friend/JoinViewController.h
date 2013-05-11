@@ -28,6 +28,7 @@
 @property (nonatomic, weak) id <JoinViewControllerDelegate> delegate;
 @property (weak, nonatomic) IBOutlet UITableView *theTableView;
 @property (weak, nonatomic) IBOutlet UITextField *nameTextField;
+@property (weak, nonatomic) IBOutlet UILabel *centerLabel;
 
 - (IBAction)exitAction:(id)sender;
 

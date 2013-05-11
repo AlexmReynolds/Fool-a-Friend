@@ -115,6 +115,7 @@
     [self setNameTextField:nil];
     [self setTheTableView:nil];
     [self setLoadingView:nil];
+    [self setCenterLabel:nil];
     [super viewDidUnload];
 }
 
@@ -125,5 +126,16 @@
     [_matchmakingServer endSession];
     [self.delegate hostViewControllerDidCancel:self];
     
+}
+
+- (IBAction)beginAction:(id)sender {
+    if(_matchmakingServer != nil && [_matchmakingServer connectedClientsCount] > 0){
+        NSString *name = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if ([name length] == 0 ){
+            name = _matchmakingServer.session.displayName;
+        }
+        [_matchmakingServer stopAcceptingConnections];
+        [self.delegate hostViewController:self startGameWithSession:_matchmakingServer.session playerName:name clients:_matchmakingServer.connectedClients];
+    }
 }
 @end

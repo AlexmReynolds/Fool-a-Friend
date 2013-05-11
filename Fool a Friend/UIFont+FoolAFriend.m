@@ -9,7 +9,7 @@
 #import "UIFont+FoolAFriend.h"
 
 @implementation UIFont (FoolAFriend)
-+(id)ap_fafFontWithSize:(CGFloat)size{
++(id)ar_fafFontWithSize:(CGFloat)size{
     return [UIFont fontWithName:@"Action Man" size:size];
 }
 @end

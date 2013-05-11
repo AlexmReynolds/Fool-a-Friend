@@ -13,7 +13,9 @@
 
 @interface HomeViewController : UIViewController<HostViewControllerDelegate, JoinViewControllerDelegate, GameViewControllerDelegate>{
     BOOL _buttonsEnabled;
+    BOOL _performAnimation;
 }
+
 
 - (IBAction)goHostAction:(id)sender;
 - (IBAction)goJoinAction:(id)sender;

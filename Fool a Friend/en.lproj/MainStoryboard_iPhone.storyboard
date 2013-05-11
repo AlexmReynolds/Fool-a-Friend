@@ -124,6 +124,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="centerLabel" destination="M8y-lS-a2v" id="2GV-Sl-9I5"/>
                         <outlet property="nameTextField" destination="bbH-pN-a58" id="QfG-ao-kyC"/>
                         <outlet property="theTableView" destination="vSw-Aq-3IW" id="5bb-eL-ubw"/>
                         <outlet property="waitView" destination="fgr-Zc-a52" id="Ksz-IH-0E5"/>
@@ -152,6 +153,9 @@
                                 <state key="highlighted">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="beginAction:" destination="oYj-eY-pO4" eventType="touchUpInside" id="HoK-fz-I91"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="ydd-iI-OFt">
                                 <rect key="frame" x="0.0" y="121" width="320" height="230"/>
@@ -219,6 +223,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="centerLabel" destination="Zb6-Br-CXZ" id="fKA-py-ieJ"/>
                         <outlet property="loadingView" destination="JV8-fM-KCa" id="Ygl-b9-bTA"/>
                         <outlet property="nameTextField" destination="tTJ-Gv-8Pa" id="ZIU-o2-CRc"/>
                         <outlet property="theTableView" destination="ydd-iI-OFt" id="kC8-H8-VQI"/>
@@ -228,8 +233,40 @@
             </objects>
             <point key="canvasLocation" x="585" y="-139"/>
         </scene>
+        <!--Game View Controller-->
+        <scene sceneID="nA9-bL-4YE">
+            <objects>
+                <viewController storyboardIdentifier="gameViewController" id="h8B-Qx-MVG" customClass="GameViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IJh-3F-qGL">
+                        <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Game View" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="WRb-mb-Ejo">
+                                <rect key="frame" x="116" y="219" width="88" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="centerLabel" destination="WRb-mb-Ejo" id="EJt-nH-Dwq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aP3-QU-YLL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="932" y="-140"/>
+        </scene>
     </scenes>
     <classes>
+        <class className="GameViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GameViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="centerLabel" candidateClass="UIView"/>
+            </relationships>
+        </class>
         <class className="HomeViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HomeViewController.h"/>
             <relationships>
@@ -240,7 +277,9 @@
         <class className="HostViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/HostViewController.h"/>
             <relationships>
+                <relationship kind="action" name="beginAction:"/>
                 <relationship kind="action" name="exitAction:"/>
+                <relationship kind="outlet" name="centerLabel" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="loadingView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="theTableView" candidateClass="UITableView"/>
@@ -249,6 +288,8 @@
         <class className="JoinViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/JoinViewController.h"/>
             <relationships>
+                <relationship kind="action" name="exitAction:"/>
+                <relationship kind="outlet" name="centerLabel" candidateClass="UILabel"/>
                 <relationship kind="outlet" name="nameTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="theTableView" candidateClass="UITableView"/>
                 <relationship kind="outlet" name="waitView" candidateClass="UIView"/>
