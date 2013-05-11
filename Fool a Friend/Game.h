@@ -54,6 +54,7 @@ GameState;
 @property (nonatomic, weak) id <GameDelegate> delegate;
 @property (nonatomic) BOOL isServer;
 
+-(NSDictionary *)getPlayers;
 -(void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 -(void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 

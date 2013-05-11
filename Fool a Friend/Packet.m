@@ -9,6 +9,8 @@
 #import "Packet.h"
 #import "Card.h"
 #import "NSData+FoolAFriend.h"
+#import "PacketSignInResponse.h"
+#import "PacketServerReady.h"
 
 @implementation Packet
 
@@ -26,7 +28,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         return nil;
     }
     
-    if ([data ar_int32AtOffset:0] != 'SNAP') {
+    if ([data ar_int32AtOffset:0] != 'FAFG') {
         NSLog(@"Error: Packet has invalid header");
         return nil;
     }
@@ -44,8 +46,10 @@ const size_t PACKET_HEADER_SIZE = 10;
             packet = [Packet packetWithType:packetType];
             break;
         case PacketTypeSignInResponse:
+            packet = [PacketSignInResponse packetWithData:data];
             break;
         case PacketTypeServerReady:
+            packet = [PacketServerReady packetWithData:data];
             break;
         case PacketTypeOtherClientQuit:
             break;

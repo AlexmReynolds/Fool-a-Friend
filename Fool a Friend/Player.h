@@ -12,7 +12,7 @@
 @property (nonatomic, assign) int lastPacketNumberReceived;
 @property (nonatomic,strong,readonly) Stack *closedCards;
 @property (nonatomic,strong,readonly) Stack *openCards;
-@property (nonatomic) int gamesWon;
+@property (nonatomic) int points;
 @property (nonatomic) BOOL receivedResponse;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *peerID;

@@ -84,9 +84,14 @@
     }
     NSLog(@"the game should begin");
 }
+-(NSDictionary *)getPlayers
+{
+    return _players;
+}
 -(Player *)playerAtPosition:(int)position
 {
-    NSAssert(position >= [_players count] && position < 0, @"Invalid Player Position");
+    NSLog(@"position is %i count is %i", position, [_players count]);
+    NSAssert(position <= [_players count] && position >= 0, @"Invalid Player Position");
     __block Player *player;
     [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
         player = obj;
@@ -143,6 +148,69 @@
     [self.delegate game:self didQuitWithReason:reason];
 }
 
+#pragma mark - GKSessionDelegate
+
+-(void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state{
+#ifdef DEBUG
+    NSLog(@"Game: peer %@ changed state %d", peerID, state);
+#endif
+    if (state == GKPeerStateDisconnected){
+        if (self.isServer){
+            //[self clientDidDisconnect:peerID redistributedCards:nil];
+        }
+        else if ([peerID isEqualToString:_serverPeerID]){
+            [self quitGameWithReason:QuitReasonConnectionDropped];
+        }
+    }
+}
+-(void)session:(GKSession *)session didReceiveConnectionRequestFromPeer:(NSString *)peerID{
+    [session denyConnectionFromPeer:peerID];
+}
+-(void)session:(GKSession *)session connectionWithPeerFailed:(NSString *)peerID withError:(NSError *)error{
+#ifdef DEBUG
+	NSLog(@"Game: connection with peer %@ failed %@", peerID, error);
+#endif
+}
+-(void)session:(GKSession *)session didFailWithError:(NSError *)error{
+#ifdef DEBUG
+	NSLog(@"Game: session failed %@", error);
+#endif
+    if ([[error domain] isEqualToString:GKSessionErrorDomain]){
+        if (_state != GameStateQuitting){
+            [self quitGameWithReason:QuitReasonConnectionDropped];
+        }
+    }
+}
+
+#pragma mark - GKSession Data Receive Handler
+
+-(void)receiveData:(NSData *)data fromPeer:(NSString *)peerID inSession:(GKSession *)session context:(void*)context{
+#ifdef DEBUG
+	NSLog(@"Game: receive data from peer: %@, data: %@, length: %d", peerID, data, [data length]);
+#endif
+    Packet *packet = [Packet packetWithData:data];
+    if (packet == nil){
+        NSLog(@"invalid packet: %@", data);
+        return;
+    }
+    Player *player = [self playerWithPeerID:peerID];
+    if (nil != player){
+        if (packet.packetNumber != -1 && packet.packetNumber <= player.lastPacketNumberReceived){
+            NSLog(@"Out of Order Packet");
+            return;
+        }
+        player.lastPacketNumberReceived = packet.packetNumber;
+        player.receivedResponse = YES;
+    }
+    if (self.isServer){
+        [self serverReceivedPacket:packet fromPlayer:player];
+    } else {
+        [self clientReceivedPacket:packet];
+    }
+}
+
+
+
 
 #pragma mark - Networking
 
@@ -187,6 +255,16 @@
             }
             break;
         case PacketTypeServerReady:
+            if (_state == GameStateWaitingForReady){
+                _players = ((PacketServerReady *)packet).players;
+                //[self changeRelativePositionsOfPlayers];
+                
+                Packet *packet = [Packet packetWithType:PacketTypeClientReady];
+                [self sendPacketToServer:packet];
+                
+                [self beginGame];
+                NSLog(@"The players are %@", _players);
+            }
             break;
         case PacketTypeOtherClientQuit:
             if (_state != GameStateQuitting){

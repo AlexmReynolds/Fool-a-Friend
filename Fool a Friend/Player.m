@@ -12,7 +12,7 @@
 @synthesize name = _name;
 @synthesize peerID = _peerID;
 @synthesize receivedResponse = _receivedResponse;
-@synthesize gamesWon = _gamesWon;
+@synthesize points = _points;
 @synthesize closedCards = _closedCards;
 @synthesize openCards = _openCards;
 @synthesize lastPacketNumberReceived = _lastPacketNumberReceived;
@@ -22,6 +22,7 @@
     self =[super init];
     if (self){
         _lastPacketNumberReceived = -1;
+        _points = 0;
         _closedCards = [[Stack alloc] init];
         _openCards = [[Stack alloc] init];
     }

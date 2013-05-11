@@ -15,7 +15,9 @@
 -(void) gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason;
 
 @end
-@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate>
+@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate>{
+    NSMutableArray *_nameLabels;
+}
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
