@@ -23,5 +23,6 @@
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 @property (strong, nonatomic) IBOutlet UITextField *centerLabel;
+- (IBAction)pickCardAction:(id)sender;
 
 @end

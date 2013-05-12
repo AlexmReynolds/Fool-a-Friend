@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self loadSounds];
 	// Do any additional setup after loading the view.
 }
 
@@ -100,6 +101,17 @@
     [self performSelector:@selector(stopDealingSound) withObject:nil afterDelay:delay];
     
 }
+
+-(void)game:(Game *)game didActivatePlayer:(Player *)player
+{
+    NSLog(@"current use peerid %@ and active player peerid %@", game.currentUser.peerID, player.peerID);
+    if (game.currentUser.peerID == player.peerID){
+        self.centerLabel.text = @"Your Turn";
+        
+    } else {
+        self.centerLabel.text = @"Their turn";
+    }
+}
 - (void)viewDidUnload {
     [self setCenterLabel:nil];
     [super viewDidUnload];
@@ -119,12 +131,17 @@
     _dealingCardsSound = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
     _dealingCardsSound.numberOfLoops = -1;
     [_dealingCardsSound prepareToPlay];
-    
+    NSLog(@"load sound");
 }
 
 -(void) stopDealingSound
 {
     [_dealingCardsSound stop];
-    //[self.game beginRound];
+    [self.game beginRound];
+}
+
+
+- (IBAction)pickCardAction:(id)sender {
+    [self.game drawCardForActivePlayer];
 }
 @end

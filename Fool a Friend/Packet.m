@@ -12,6 +12,7 @@
 #import "PacketSignInResponse.h"
 #import "PacketServerReady.h"
 #import "PacketSetupGameDeck.h"
+#import "PacketActivatePlayer.h"
 
 @implementation Packet
 
@@ -46,6 +47,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeClientDeckSetupResponse:
         case PacketTypeClientReady:
         case PacketServerGameReady:
+        case PacketTypeClientTurnedCard:
             packet = [Packet packetWithType:packetType];
             break;
         case PacketTypeSignInResponse:
@@ -57,6 +59,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeOtherClientQuit:
             break;
         case PacketTypeActivatePlayer:
+            packet = [PacketActivatePlayer packetWithData:data];
 			break;
         case PacketTypeSetupGameDeck:
             packet = [PacketSetupGameDeck packetWithData:data];

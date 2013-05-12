@@ -25,6 +25,7 @@ typedef enum
     
 	PacketTypeActivatePlayer,          // server to client
 	PacketTypeCardRead,                // client read card and hit button.
+    PacketTypeClientTurnedCard,
     
 	PacketTypeAllAnswersSubmitted,     // server to client to give all answers to active player
 	PacketTypeAllLiesRead,              // client to server

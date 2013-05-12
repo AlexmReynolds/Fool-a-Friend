@@ -17,7 +17,11 @@
     NSDictionary *card2 = [[NSDictionary alloc] initWithObjectsAndKeys:@"What is Godzilla about?",@"question",@"Movie about monster",@"answer",[NSNumber numberWithInt:Movies],@"category", nil];
     NSDictionary *card3 = [[NSDictionary alloc] initWithObjectsAndKeys:@"It is illegal for a dog to?",@"question",@"Sleep indoors",@"answer",[NSNumber numberWithInt:Laws],@"category", nil];
     NSLog(@"Get Temp cards");
-    NSArray *cards = [NSArray arrayWithObjects:card1,card2,card3, nil];
+    NSDictionary *card4 = [[NSDictionary alloc] initWithObjectsAndKeys:@"It is Card4 for a dog to?",@"question",@"Run indoors",@"answer",[NSNumber numberWithInt:Laws],@"category", nil];
+    NSLog(@"Get Temp cards");
+    NSDictionary *card5 = [[NSDictionary alloc] initWithObjectsAndKeys:@"It is Card5 for a dog to?",@"question",@"Talk indoors",@"answer",[NSNumber numberWithInt:Laws],@"category", nil];
+    NSLog(@"Get Temp cards");
+    NSArray *cards = [NSArray arrayWithObjects:card1,card2,card3,card4,card5, nil];
     
     for (NSDictionary *basecard in cards){
         NSLog(@"load cards into deck");

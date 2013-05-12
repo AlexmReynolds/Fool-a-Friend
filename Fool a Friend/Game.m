@@ -10,11 +10,13 @@
 #import "PacketSignInResponse.h"
 #import "PacketServerReady.h"
 #import "PacketSetupGameDeck.h"
+#import "PacketActivatePlayer.h"
 
 
 @implementation Game
 
 @synthesize delegate = _delegate;
+@synthesize currentUser;
 @synthesize isServer = _isServer;
 
 -(id) init
@@ -38,7 +40,7 @@
     
     _serverPeerID = peerID;
     _localPlayerName = name;
-    
+    _clientPeerID = _session.peerID;
     _state = GameStateWaitingForSignIn;
     
     [self.delegate gameWaitingForServerReady:self];
@@ -59,9 +61,11 @@
     Player *player = [[Player alloc] init];
     player.name = name;
     player.peerID = _session.peerID;
+    player.position = 0;
+    currentUser = player;
     [_players setObject:player forKey:player.peerID];
     
-    int index = 0;
+    int index = 1;
     for (NSString *peerID in clients){
         NSLog(@"Assign player position %i", index);
         Player *player = [[Player alloc] init];
@@ -101,6 +105,7 @@
     
     NSLog(@"get Starting player");
     Player *startingPlayer = [self activePlayer];
+    NSLog(@"starting player name is %@",startingPlayer.name);
 
     
     PacketSetupGameDeck *packet = [PacketSetupGameDeck packetWithCards:[_deck getAllCards] startingWithPlayerPeerID:startingPlayer.peerID];
@@ -160,7 +165,38 @@
     
 	[self.delegate gameShouldLoadDeck:self];
 }
-
+-(void) beginRound
+{
+    _busyDealing = NO;
+    _hasTurnedCard = NO;
+    [self activatePlayerAtPosition:_activePlayerPosition];
+}
+-(void) turnCardForActivePlayer
+{
+    NSLog(@" turn card !!!!!");
+    [self turnCardForPlayer:[self activePlayer]];
+    
+    if(self.isServer){
+        [self performSelector:@selector(activateNextPlayer) withObject:nil afterDelay:0.5f];
+    }
+}
+-(void)drawCardForActivePlayer
+{
+    NSLog(@"current user name %@ and pos %i", currentUser.name, currentUser.position);
+    NSLog(@"active player pos %i", _activePlayerPosition);
+    if (_state == GameStatePlaying &&
+        _activePlayerPosition == currentUser.position &&
+        !_busyDealing &&
+        !_hasTurnedCard){
+        
+        [self turnCardForActivePlayer];
+        
+        if(!self.isServer){
+            Packet *packet = [Packet packetWithType:PacketTypeClientTurnedCard];
+            [self sendPacketToServer:packet];
+        }
+    }
+}
 
 #pragma mark - Player Methods
 
@@ -180,6 +216,7 @@
     [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
         player = obj;
         if (player.position == position){
+            NSLog(@"player at posi is %@",obj.name);
             *stop = YES;
         } else {
             player = nil;
@@ -199,7 +236,83 @@
     }
     while ([self playerAtPosition:_startingPlayerPosition] == nil);
     _activePlayerPosition = _startingPlayerPosition;
-    NSLog(@"starting player is %i", _startingPlayerPosition);
+    NSLog(@"starting player is %@", [self playerAtPosition:_startingPlayerPosition].name);
+}
+
+
+-(void) handleActivatePlayerPacket:(PacketActivatePlayer *)packet
+{
+    NSLog(@"hande act");
+    if (_firstTime){
+        _firstTime = NO;
+        return;
+    }
+    NSString *peerID = packet.peerID;
+    
+    Player *newPlayer = [self playerWithPeerID:peerID];
+    if (nil == newPlayer){
+        return;
+    }
+    NSLog(@"client handle packet for active  players %@", newPlayer.name);
+    [self turnCardForActivePlayer];
+    [self performSelector:@selector(activatePlayerWithPeerID:) withObject:peerID afterDelay:0.5f];
+}
+-(void) activatePlayerWithPeerID:(NSString *)peerID
+{
+    NSAssert(!self.isServer, @"Must be client");
+    
+    Player *player = [self playerWithPeerID:peerID];
+    _activePlayerPosition = player.position;
+    [self activatePlayerAtPosition:_activePlayerPosition];
+    if ([player shouldRecycle])
+	{
+		//[self recycleCardsForActivePlayer];
+	}
+}
+-(void)activateNextPlayer
+{
+    NSAssert(self.isServer, @"Must be server");
+    NSLog(@"activate next player");
+    while(true){
+        _activePlayerPosition ++;
+        if (_activePlayerPosition > ([_players count] -1)){
+            _activePlayerPosition = 0;
+        }
+        
+        Player *nextPlayer = [self activePlayer];
+        if (nextPlayer != nil){
+            if([nextPlayer.closedCards cardCount] > 0){
+                [self activatePlayerAtPosition:_activePlayerPosition];
+                return;
+            }else {
+                [self activatePlayerAtPosition:_activePlayerPosition];
+                return;
+            }
+            
+        }
+    }
+}
+
+-(void) turnCardForPlayer:(Player *)player{
+    NSAssert([_deck cardsRemaining] > 0, @"Deck has no more cards");
+    
+    _hasTurnedCard = YES;
+
+    NSLog(@"turn card for player");
+    //[self.delegate game:self player:player turnedOverCard:card];
+}
+
+-(void) activatePlayerAtPosition:(int)position
+{
+    NSLog(@"activate player from beginround %@", [self activePlayer].name);
+    
+    _hasTurnedCard = NO;
+    if (self.isServer){
+        NSString *peerID = [self activePlayer].peerID;
+        Packet *packet = [PacketActivatePlayer packetWithPeerID:peerID];
+        [self sendPacketToAllClients:packet];
+    }
+    [self.delegate game:self didActivatePlayer:[self activePlayer]];
 }
 
 #pragma mark - GKSessionDelegate
@@ -311,6 +424,7 @@
         case PacketTypeServerReady:
             if (_state == GameStateWaitingForReady){
                 _players = ((PacketServerReady *)packet).players;
+                currentUser = [self playerWithPeerID:_clientPeerID];
                 //[self changeRelativePositionsOfPlayers];
                 
                 Packet *packet = [Packet packetWithType:PacketTypeClientReady];
@@ -329,6 +443,7 @@
             break;
         case PacketTypeActivatePlayer:
             if (_state == GameStatePlaying){
+                [self handleActivatePlayerPacket:(PacketActivatePlayer *)packet];
             }
             break;
         case PacketTypeSetupGameDeck:
@@ -369,9 +484,17 @@
         case PacketTypeClientDeckSetupResponse:
                 if ([self receivedResponsesFromAllPlayer]){
                     NSLog(@"All clients have responded.");
+                    _state = GameStatePlaying;
                     Packet *packet = [Packet packetWithType:PacketServerGameReady];
                     [self sendPacketToAllClients:packet];
                 }
+            break;
+        case PacketTypeClientTurnedCard:
+            NSLog(@"client turned card");
+            if (_state == GameStatePlaying && player == [self activePlayer]){
+                NSLog(@"go turn card");
+                [self turnCardForActivePlayer];
+            }
             break;
         case PacketTypeClientQuit:
             break;

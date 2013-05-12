@@ -13,6 +13,7 @@
 		E7405277173F161C000CC67E /* Dealing.caf in Resources */ = {isa = PBXBuildFile; fileRef = E7405276173F161C000CC67E /* Dealing.caf */; };
 		E740527A173F1685000CC67E /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = E7405278173F1685000CC67E /* Back.png */; };
 		E740527B173F1685000CC67E /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7405279173F1685000CC67E /* Back@2x.png */; };
+		E740527E1740364B000CC67E /* PacketActivatePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E740527D1740364A000CC67E /* PacketActivatePlayer.m */; };
 		E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA3173B35F100E155FC /* Communicator.m */; };
 		E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */; };
 		E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */; };
@@ -63,6 +64,8 @@
 		E7405276173F161C000CC67E /* Dealing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dealing.caf; sourceTree = "<group>"; };
 		E7405278173F1685000CC67E /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
 		E7405279173F1685000CC67E /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
+		E740527C1740364A000CC67E /* PacketActivatePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketActivatePlayer.h; sourceTree = "<group>"; };
+		E740527D1740364A000CC67E /* PacketActivatePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketActivatePlayer.m; sourceTree = "<group>"; };
 		E7D5EFA2173B35F100E155FC /* Communicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Communicator.h; sourceTree = "<group>"; };
 		E7D5EFA3173B35F100E155FC /* Communicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Communicator.m; sourceTree = "<group>"; };
 		E7D5EFA5173B383F00E155FC /* NSData+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+FoolAFriend.h"; sourceTree = "<group>"; };
@@ -218,6 +221,8 @@
 				E7D5EFB1173B3C5B00E155FC /* MatchMakingServer.m */,
 				E7D5EFB2173B3C5B00E155FC /* MatchMakingClient.h */,
 				E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */,
+				E740527C1740364A000CC67E /* PacketActivatePlayer.h */,
+				E740527D1740364A000CC67E /* PacketActivatePlayer.m */,
 				E9ECED15173AE2AA0093191E /* Packet.h */,
 				E9ECED16173AE2AA0093191E /* Packet.m */,
 				E7D5EFBA173E1BBD00E155FC /* PacketSignInResponse.h */,
@@ -386,6 +391,7 @@
 				E7D5EFBF173E1D4E00E155FC /* PacketServerReady.m in Sources */,
 				E740526D173F05CC000CC67E /* PacketSetupGameDeck.m in Sources */,
 				E7405273173F1350000CC67E /* CardView.m in Sources */,
+				E740527E1740364B000CC67E /* PacketActivatePlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

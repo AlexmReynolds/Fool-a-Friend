@@ -48,6 +48,7 @@ GameState;
     Deck *_deck;
     GKSession *_session;
     NSString *_serverPeerID;
+    NSString *_clientPeerID;
     NSString *_localPlayerName;
     int _startingPlayerPosition;
     int _activePlayerPosition;
@@ -55,10 +56,12 @@ GameState;
 
 @property (nonatomic, weak) id <GameDelegate> delegate;
 @property (nonatomic) BOOL isServer;
+@property (nonatomic, strong) Player *currentUser;
 
 -(NSDictionary *)getPlayers;
 -(Deck *) getDeck;
 -(void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 -(void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
-
+-(void)beginRound;
+-(void)drawCardForActivePlayer;
 @end
