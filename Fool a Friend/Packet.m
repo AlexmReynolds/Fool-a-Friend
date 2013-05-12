@@ -11,6 +11,7 @@
 #import "NSData+FoolAFriend.h"
 #import "PacketSignInResponse.h"
 #import "PacketServerReady.h"
+#import "PacketSetupGameDeck.h"
 
 @implementation Packet
 
@@ -42,7 +43,9 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeClientQuit:
         case PacketTypeServerQuit:
         case PacketTypeSignInRequest:
+        case PacketTypeClientDeckSetupResponse:
         case PacketTypeClientReady:
+        case PacketServerGameReady:
             packet = [Packet packetWithType:packetType];
             break;
         case PacketTypeSignInResponse:
@@ -55,6 +58,9 @@ const size_t PACKET_HEADER_SIZE = 10;
             break;
         case PacketTypeActivatePlayer:
 			break;
+        case PacketTypeSetupGameDeck:
+            packet = [PacketSetupGameDeck packetWithData:data];
+            break;
         default:
             NSLog(@"Error: packet has invalid type");
             break;
@@ -90,47 +96,40 @@ const size_t PACKET_HEADER_SIZE = 10;
 {
     
 }
--(void)addCards:(NSDictionary *)cards toPayload:(NSMutableData *)data
+-(void)addCards:(NSArray *)cards toPayload:(NSMutableData *)data
 {
-    [cards enumerateKeysAndObjectsUsingBlock:^(id key, NSArray *array, BOOL *stop) {
-        [data ar_appendString:key];
-        [data ar_appendInt8:[array count]];
+    [data ar_appendInt8:[cards count]];
         
-        for (int t = 0; t <[array count]; ++t){
-            Card *card = [array objectAtIndex:t];
-            [data ar_appendString:card.question];
-            [data ar_appendString:card.answer];
-            [data ar_appendInt8:card.category];
-        }
-    }];
+    for (int t = 0; t <[cards count]; ++t){
+        Card *card = [cards objectAtIndex:t];
+        [data ar_appendString:card.question];
+        [data ar_appendString:card.answer];
+        [data ar_appendInt8:card.category];
+    }
 }
-+(NSMutableDictionary *)cardsFromData:(NSData *)data atOffset:(size_t)offset
++(NSMutableArray *)cardsFromData:(NSData *)data atOffset:(size_t)offset
 {
     size_t count;
-    NSMutableDictionary *cards = [NSMutableDictionary dictionaryWithCapacity:4];
-    
+
+    NSMutableArray *cards;
     while (offset < [data length]){
-        NSString *peerID = [data ar_stringAtOffset:offset bytesRead:&count];
-        offset +=count;
         
         int numberOfCards = [data ar_int8AtOffset:offset];
+        cards = [NSMutableArray arrayWithCapacity:numberOfCards];
         offset +=1;
-        
-        NSMutableArray *array = [NSMutableArray arrayWithCapacity:numberOfCards];
         for (int t = 0; t < numberOfCards; ++t){
             NSString *question = [data ar_stringAtOffset:offset bytesRead:&count];
             offset += count;
             
             NSString *answer = [data ar_stringAtOffset:offset bytesRead:&count];
             offset += count;
-            
+
             CardCategory category =  [data ar_int8AtOffset:offset];
             offset += 1;
-            
+            NSLog(@"adding card with question %@ and category %i",question, category);
             Card *card = [[Card alloc] initWithQuestion:question answer:answer andCategory:category];
-            [array addObject:card];
+            [cards addObject:card];
         }
-        [cards setObject:array forKey:peerID];
     }
     return cards;
 }

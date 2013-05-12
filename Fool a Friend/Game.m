@@ -9,6 +9,8 @@
 #import "Game.h"
 #import "PacketSignInResponse.h"
 #import "PacketServerReady.h"
+#import "PacketSetupGameDeck.h"
+
 
 @implementation Game
 
@@ -82,8 +84,89 @@
     
     if(self.isServer){
         [self pickRandomStartingPlayer];
+        [self setupGameDeck];
     }
     NSLog(@"the game should begin");
+}
+
+-(void) setupGameDeck
+{
+    NSLog(@"Deal Cards");
+    NSAssert(self.isServer, @"Must be server");
+    NSAssert(_state == GameStateDealing, @"Wrong state");
+
+    _deck = [[Deck alloc] init];
+    NSLog(@"Now shuffle");
+    [_deck shuffle];
+    
+    NSLog(@"get Starting player");
+    Player *startingPlayer = [self activePlayer];
+
+    
+    PacketSetupGameDeck *packet = [PacketSetupGameDeck packetWithCards:[_deck getAllCards] startingWithPlayerPeerID:startingPlayer.peerID];
+    NSLog(@"send Packet of cards");
+	[self sendPacketToAllClients:packet];
+    [self.delegate gameShouldLoadDeck:self];
+    
+}
+
+-(BOOL) receivedResponsesFromAllPlayer{
+    for (NSString *peerID in _players){
+        Player *player = [self playerWithPeerID:peerID];
+        if (!player.receivedResponse){
+            return NO;
+        }
+    }
+    return YES;
+}
+
+-(Deck *) getDeck
+{
+    return _deck;
+}
+
+-(void)quitGameWithReason:(QuitReason)reason{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    _state = GameStateQuitting;
+    if (reason == QuitReasonUserQuit){
+        if (self.isServer){
+            Packet *packet = [Packet packetWithType:PacketTypeServerQuit];
+            [self sendPacketToAllClients:packet];
+        } else {
+            Packet *packet = [Packet packetWithType:PacketTypeClientQuit];
+            [self sendPacketToServer:packet];
+        }
+    }
+    [_session disconnectFromAllPeers];
+    _session.delegate = nil;
+    _session = nil;
+    
+    [self.delegate game:self didQuitWithReason:reason];
+}
+
+- (void)handleSetupDeckPacket:(PacketSetupGameDeck *)packet
+{
+	NSAssert([packet.cards count]  > 0, @"No Cards We Dealt");
+    NSLog(@"Handle Setup Deck");
+    _deck = [[Deck alloc] initWithCards:packet.cards];
+    
+	Player *startingPlayer = [self playerWithPeerID:packet.startingPeerID];
+	_activePlayerPosition = startingPlayer.position;
+    
+	Packet *responsePacket = [Packet packetWithType:PacketTypeClientDeckSetupResponse];
+	[self sendPacketToServer:responsePacket];
+    
+	_state = GameStatePlaying;
+    
+	[self.delegate gameShouldLoadDeck:self];
+}
+
+
+#pragma mark - Player Methods
+
+-(Player *)activePlayer
+{
+    return [self playerAtPosition:_activePlayerPosition];
 }
 -(NSDictionary *)getPlayers
 {
@@ -108,16 +191,6 @@
 {
 	return [_players objectForKey:peerID];
 }
--(BOOL) receivedResponsesFromAllPlayer{
-    for (NSString *peerID in _players){
-        Player *player = [self playerWithPeerID:peerID];
-        if (!player.receivedResponse){
-            return NO;
-        }
-    }
-    return YES;
-}
-
 -(void) pickRandomStartingPlayer
 {
     do
@@ -127,26 +200,6 @@
     while ([self playerAtPosition:_startingPlayerPosition] == nil);
     _activePlayerPosition = _startingPlayerPosition;
     NSLog(@"starting player is %i", _startingPlayerPosition);
-}
-
-
--(void)quitGameWithReason:(QuitReason)reason{
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
-    _state = GameStateQuitting;
-    if (reason == QuitReasonUserQuit){
-        if (self.isServer){
-            Packet *packet = [Packet packetWithType:PacketTypeServerQuit];
-            [self sendPacketToAllClients:packet];
-        } else {
-            Packet *packet = [Packet packetWithType:PacketTypeClientQuit];
-            [self sendPacketToServer:packet];
-        }
-    }
-    [_session disconnectFromAllPeers];
-    _session.delegate = nil;
-    _session = nil;
-    
-    [self.delegate game:self didQuitWithReason:reason];
 }
 
 #pragma mark - GKSessionDelegate
@@ -278,6 +331,14 @@
             if (_state == GameStatePlaying){
             }
             break;
+        case PacketTypeSetupGameDeck:
+            if (_state == GameStateDealing){
+                [self handleSetupDeckPacket:(PacketSetupGameDeck *)packet];
+            }
+            break;
+        case PacketServerGameReady:
+            NSLog(@"All systems GO!!!");
+            break;
         default:
             break;
     }
@@ -304,6 +365,13 @@
             if (_state == GameStateWaitingForReady && [self receivedResponsesFromAllPlayer]){
                 [self beginGame];
             }
+            break;
+        case PacketTypeClientDeckSetupResponse:
+                if ([self receivedResponsesFromAllPlayer]){
+                    NSLog(@"All clients have responded.");
+                    Packet *packet = [Packet packetWithType:PacketServerGameReady];
+                    [self sendPacketToAllClients:packet];
+                }
             break;
         case PacketTypeClientQuit:
             break;

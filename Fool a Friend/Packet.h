@@ -19,7 +19,9 @@ typedef enum
 	PacketTypeClientReady,             // client to server
     
 	PacketTypeClientSpecious,          // client specious answers to server
-	PacketTypeStartLying,               // server sends question to clients to answer
+	PacketTypeSetupGameDeck,               // server sends question to clients to answer
+    PacketTypeClientDeckSetupResponse,
+    PacketServerGameReady,
     
 	PacketTypeActivatePlayer,          // server to client
 	PacketTypeCardRead,                // client read card and hit button.
@@ -42,8 +44,8 @@ typedef enum
 + (id)packetWithType:(PacketType)packetType;
 + (id)packetWithData:(NSData *)data;
 - (id)initWithType:(PacketType)packetType;
-+ (NSDictionary *)cardsFromData:(NSData *)data atOffset:(size_t)offset;
--(void)addCards:(NSDictionary *)cards toPayload:(NSMutableData *)data;
++ (NSMutableArray *)cardsFromData:(NSData *)data atOffset:(size_t)offset;
+-(void)addCards:(NSArray *)cards toPayload:(NSMutableData *)data;
 
 -(NSData *)data;
 @end

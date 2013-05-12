@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "Player.h"
 #import "Packet.h"
+#import "Deck.h"
 typedef enum
 {
 	GameStateWaitingForSignIn,
@@ -27,6 +28,7 @@ GameState;
 -(void)gameWaitingForServerReady:(Game *)game;
 -(void)gameWaitingForClientsReady:(Game *)game;
 -(void)gameDidBegin:(Game*)game;
+-(void)gameShouldLoadDeck:(Game *)game;
 -(void)game:(Game *)game playerDidDisconnect:(Player *)player redistributedCards:(NSDictionary *)redistributedCards;
 -(void)gameShouldDealCards:(Game *)game startingWithPlayer:(Player *)startingPlayer;
 -(void)game:(Game *)game didActivatePlayer:(Player *)player;
@@ -43,7 +45,7 @@ GameState;
     BOOL _hasTurnedCard;
     int _sendPacketNumber;
     GameState _state;
-    
+    Deck *_deck;
     GKSession *_session;
     NSString *_serverPeerID;
     NSString *_localPlayerName;
@@ -55,6 +57,7 @@ GameState;
 @property (nonatomic) BOOL isServer;
 
 -(NSDictionary *)getPlayers;
+-(Deck *) getDeck;
 -(void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 -(void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 

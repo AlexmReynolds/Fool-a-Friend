@@ -17,6 +17,7 @@
 @end
 @interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate>{
     NSMutableDictionary *_nameLabels;
+        AVAudioPlayer *_dealingCardsSound;
 }
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;

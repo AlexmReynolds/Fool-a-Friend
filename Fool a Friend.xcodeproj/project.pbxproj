@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E740526D173F05CC000CC67E /* PacketSetupGameDeck.m in Sources */ = {isa = PBXBuildFile; fileRef = E740526C173F05CC000CC67E /* PacketSetupGameDeck.m */; };
+		E7405273173F1350000CC67E /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = E7405272173F1350000CC67E /* CardView.m */; };
+		E7405275173F15E4000CC67E /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7405274173F15E4000CC67E /* AVFoundation.framework */; };
+		E7405277173F161C000CC67E /* Dealing.caf in Resources */ = {isa = PBXBuildFile; fileRef = E7405276173F161C000CC67E /* Dealing.caf */; };
+		E740527A173F1685000CC67E /* Back.png in Resources */ = {isa = PBXBuildFile; fileRef = E7405278173F1685000CC67E /* Back.png */; };
+		E740527B173F1685000CC67E /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7405279173F1685000CC67E /* Back@2x.png */; };
 		E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA3173B35F100E155FC /* Communicator.m */; };
 		E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */; };
 		E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */; };
@@ -49,6 +55,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E740526B173F05CC000CC67E /* PacketSetupGameDeck.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketSetupGameDeck.h; sourceTree = "<group>"; };
+		E740526C173F05CC000CC67E /* PacketSetupGameDeck.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketSetupGameDeck.m; sourceTree = "<group>"; };
+		E7405271173F1350000CC67E /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
+		E7405272173F1350000CC67E /* CardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CardView.m; sourceTree = "<group>"; };
+		E7405274173F15E4000CC67E /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		E7405276173F161C000CC67E /* Dealing.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Dealing.caf; sourceTree = "<group>"; };
+		E7405278173F1685000CC67E /* Back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Back.png; sourceTree = "<group>"; };
+		E7405279173F1685000CC67E /* Back@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Back@2x.png"; sourceTree = "<group>"; };
 		E7D5EFA2173B35F100E155FC /* Communicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Communicator.h; sourceTree = "<group>"; };
 		E7D5EFA3173B35F100E155FC /* Communicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Communicator.m; sourceTree = "<group>"; };
 		E7D5EFA5173B383F00E155FC /* NSData+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+FoolAFriend.h"; sourceTree = "<group>"; };
@@ -119,6 +133,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7405275173F15E4000CC67E /* AVFoundation.framework in Frameworks */,
 				E9ECED14173AE2740093191E /* GameKit.framework in Frameworks */,
 				E9ECECC7173AE0330093191E /* UIKit.framework in Frameworks */,
 				E9ECECC9173AE0330093191E /* Foundation.framework in Frameworks */,
@@ -153,6 +168,7 @@
 		E9ECECC5173AE0330093191E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E7405274173F15E4000CC67E /* AVFoundation.framework */,
 				E9ECED13173AE2740093191E /* GameKit.framework */,
 				E9ECECC6173AE0330093191E /* UIKit.framework */,
 				E9ECECC8173AE0330093191E /* Foundation.framework */,
@@ -181,7 +197,10 @@
 			isa = PBXGroup;
 			children = (
 				E7D5EFAB173B38B700E155FC /* Action_Man.ttf */,
+				E7405278173F1685000CC67E /* Back.png */,
+				E7405279173F1685000CC67E /* Back@2x.png */,
 				E9ECECCE173AE0330093191E /* Fool a Friend-Info.plist */,
+				E7405276173F161C000CC67E /* Dealing.caf */,
 				E9ECECCF173AE0330093191E /* InfoPlist.strings */,
 				E9ECECD2173AE0330093191E /* main.m */,
 				E9ECECD4173AE0330093191E /* Fool a Friend-Prefix.pch */,
@@ -203,6 +222,8 @@
 				E9ECED16173AE2AA0093191E /* Packet.m */,
 				E7D5EFBA173E1BBD00E155FC /* PacketSignInResponse.h */,
 				E7D5EFBB173E1BBD00E155FC /* PacketSignInResponse.m */,
+				E740526B173F05CC000CC67E /* PacketSetupGameDeck.h */,
+				E740526C173F05CC000CC67E /* PacketSetupGameDeck.m */,
 				E7D5EFBD173E1D4D00E155FC /* PacketServerReady.h */,
 				E7D5EFBE173E1D4D00E155FC /* PacketServerReady.m */,
 				E7D5EFA2173B35F100E155FC /* Communicator.h */,
@@ -216,6 +237,8 @@
 			children = (
 				E7D5EFAD173B3A5C00E155FC /* Card.h */,
 				E7D5EFAE173B3A5C00E155FC /* Card.m */,
+				E7405271173F1350000CC67E /* CardView.h */,
+				E7405272173F1350000CC67E /* CardView.m */,
 				E9ECED0A173AE1FB0093191E /* Game.h */,
 				E9ECED0B173AE1FB0093191E /* Game.m */,
 				E9ECED0D173AE2050093191E /* Player.h */,
@@ -325,6 +348,9 @@
 				E7D5EFC9173EDDE100E155FC /* icon114.png in Resources */,
 				E7D5EFCB173EDDEB00E155FC /* icon72.png in Resources */,
 				E7D5EFCD173EDE2E00E155FC /* icon144.png in Resources */,
+				E7405277173F161C000CC67E /* Dealing.caf in Resources */,
+				E740527A173F1685000CC67E /* Back.png in Resources */,
+				E740527B173F1685000CC67E /* Back@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,6 +384,8 @@
 				E7D5EFB9173B3E6200E155FC /* Stack.m in Sources */,
 				E7D5EFBC173E1BBD00E155FC /* PacketSignInResponse.m in Sources */,
 				E7D5EFBF173E1D4E00E155FC /* PacketServerReady.m in Sources */,
+				E740526D173F05CC000CC67E /* PacketSetupGameDeck.m in Sources */,
+				E7405273173F1350000CC67E /* CardView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

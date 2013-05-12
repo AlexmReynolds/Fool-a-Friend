@@ -7,6 +7,7 @@
 //
 
 #import "GameViewController.h"
+#import "CardView.h"
 
 @interface GameViewController ()
 
@@ -78,8 +79,52 @@
 {
     [self addPlayerLabels];
 }
+
+-(void) gameShouldLoadDeck:(Game *)game
+{
+    NSLog(@"starting Dealing Deck");
+    self.centerLabel.text = NSLocalizedString(@"Dealing...", @"Status Text");
+    
+    NSTimeInterval delay =1.0f;
+    
+    _dealingCardsSound.currentTime = 0.0f;
+    [_dealingCardsSound prepareToPlay];
+    [_dealingCardsSound performSelector:@selector(play) withObject:nil afterDelay:delay];
+    size_t count = [[[self.game getDeck] getAllCards] count];
+    for(int t=0; t < count; ++t){
+                CardView *cardView = [[CardView alloc] initWithFrame:CGRectMake(0,0,CardWidth, CardHeight)];
+                [self.view addSubview:cardView];
+                [cardView animateDealingWithDelay:delay];
+                delay += 0.1f;
+    }
+    [self performSelector:@selector(stopDealingSound) withObject:nil afterDelay:delay];
+    
+}
 - (void)viewDidUnload {
     [self setCenterLabel:nil];
     [super viewDidUnload];
+}
+
+
+#pragma mark - Sounds
+
+-(void) loadSounds
+{
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    audioSession.delegate = nil;
+    [audioSession setCategory:AVAudioSessionCategoryAmbient error:NULL];
+    [audioSession setActive:YES error:NULL];
+    
+    NSURL *url = [[NSBundle mainBundle] URLForResource:@"Dealing" withExtension:@"caf"];
+    _dealingCardsSound = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:nil];
+    _dealingCardsSound.numberOfLoops = -1;
+    [_dealingCardsSound prepareToPlay];
+    
+}
+
+-(void) stopDealingSound
+{
+    [_dealingCardsSound stop];
+    //[self.game beginRound];
 }
 @end

@@ -11,9 +11,10 @@
 @interface Deck : NSObject{
     NSMutableArray *_cards;
 }
-
+-(id) initWithCards:(NSArray *)cards;
 -(void)shuffle;
 -(Card *)draw;
 -(int)cardsRemaining;
+-(NSArray *) getAllCards;
 
 @end
