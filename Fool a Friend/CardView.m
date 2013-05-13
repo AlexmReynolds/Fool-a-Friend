@@ -38,8 +38,6 @@ const CGFloat CardHeight = 99.0f;
     CGRect rect = self.superview.bounds;
     CGFloat midX = CGRectGetMidX(rect);
     CGFloat midY = CGRectGetMidY(rect);
-    CGFloat maxX = CGRectGetMaxX(rect);
-    CGFloat maxY = CGRectGetMaxY(rect);
     NSLog(@"midx %f midy %f", midX, midY);
     
     CGPoint point = CGPointMake(midX ,midY);

@@ -47,6 +47,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeClientDeckSetupResponse:
         case PacketTypeClientReady:
         case PacketServerGameReady:
+        case PacketTypeCardRead:
         case PacketTypeClientTurnedCard:
             packet = [Packet packetWithType:packetType];
             break;
@@ -127,7 +128,7 @@ const size_t PACKET_HEADER_SIZE = 10;
             NSString *answer = [data ar_stringAtOffset:offset bytesRead:&count];
             offset += count;
 
-            CardCategory category =  [data ar_int8AtOffset:offset];
+            int category =  [data ar_int8AtOffset:offset];
             offset += 1;
             NSLog(@"adding card with question %@ and category %i",question, category);
             Card *card = [[Card alloc] initWithQuestion:question answer:answer andCategory:category];

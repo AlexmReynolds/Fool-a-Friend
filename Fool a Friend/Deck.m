@@ -24,8 +24,8 @@
     NSArray *cards = [NSArray arrayWithObjects:card1,card2,card3,card4,card5, nil];
     
     for (NSDictionary *basecard in cards){
-        NSLog(@"load cards into deck");
-        Card *card = [[Card alloc] initWithQuestion:[basecard objectForKey:@"question"] answer:[basecard objectForKey:@"answer"] andCategory:(CardCategory)[basecard valueForKey:@"category"]];
+        NSLog(@"load cards into deck card cat %i",[[basecard valueForKey:@"category"] intValue]);
+        Card *card = [[Card alloc] initWithQuestion:[basecard objectForKey:@"question"] answer:[basecard objectForKey:@"answer"] andCategory:[[basecard valueForKey:@"category"]intValue ]];
         [_cards addObject:card];
     }
 }

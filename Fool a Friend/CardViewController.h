@@ -7,7 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Card.h"
+@class CardViewController;
 
-@interface CardViewController : UIViewController
+@protocol CardViewControllerDelegate <NSObject>
 
+-(void)sendQuestionToClients:(Card *)card;
+
+@end
+@interface CardViewController : UIViewController{
+    Card *_card;
+}
+
+@property (weak, nonatomic) IBOutlet UITableView *theTableView;
+@property (weak, nonatomic) IBOutlet UILabel *questionLabel;
+@property (weak, nonatomic) IBOutlet UILabel *categoryLabel;
+@property (weak, nonatomic) id <CardViewControllerDelegate> delegate;
+- (IBAction)startAnswersAction:(id)sender;
+- (IBAction)toggleAnswerPlayerNames:(id)sender;
+
+-(void)loadCard:(Card *)card;
 @end

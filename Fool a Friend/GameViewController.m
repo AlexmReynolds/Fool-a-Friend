@@ -117,6 +117,25 @@
     [super viewDidUnload];
 }
 
+-(void)game:(Game *)game showCardToReader:(Card*)card
+{
+    _readerViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"cardViewController"];
+    [_readerViewController loadCard:card];
+    _readerViewController.delegate = self;
+    [self presentViewController:_readerViewController animated:YES completion:nil];
+}
+-(void)game:(Game *)game showQuestionToPlayers:(Card *)card
+{
+    _liarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"liarViewController"];
+    [_liarViewController loadCard:card];
+    [self presentViewController:_liarViewController animated:YES completion:nil];
+}
+
+#pragma mark - cardviewcontroller
+
+-(void)sendQuestionToClients:(Card *)card{
+    [self.game sendQuestionToClients:card];
+}
 
 #pragma mark - Sounds
 

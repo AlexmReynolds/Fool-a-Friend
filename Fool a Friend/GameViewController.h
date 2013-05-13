@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CardViewController.h"
+#import "VotingViewController.h"
 #import "Game.h"
 @class GameViewController;
 
@@ -15,9 +17,11 @@
 -(void) gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason;
 
 @end
-@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate>{
+@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, CardViewControllerDelegate>{
     NSMutableDictionary *_nameLabels;
         AVAudioPlayer *_dealingCardsSound;
+    CardViewController *_readerViewController;
+    VotingViewController *_liarViewController;
 }
 
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;

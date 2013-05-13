@@ -7,7 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Card.h"
+@interface VotingViewController : UIViewController{
+    Card *_card;
+}
 
-@interface VotingViewController : UIViewController
+
+-(void)loadCard:(Card *)card;
+@property (weak, nonatomic) IBOutlet UITableView *ipadTheTableView;
+@property (weak, nonatomic) IBOutlet UILabel *questionLabel;
+@property (weak, nonatomic) IBOutlet UITextView *answerTextView;
+- (IBAction)submitLieAction:(id)sender;
 
 @end

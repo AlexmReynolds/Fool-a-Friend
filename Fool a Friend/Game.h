@@ -29,6 +29,8 @@ GameState;
 -(void)gameWaitingForClientsReady:(Game *)game;
 -(void)gameDidBegin:(Game*)game;
 -(void)gameShouldLoadDeck:(Game *)game;
+-(void)game:(Game *)game showCardToReader:(Card*)card;
+-(void)game:(Game *)game showQuestionToPlayers:(Card *)card;
 -(void)game:(Game *)game playerDidDisconnect:(Player *)player redistributedCards:(NSDictionary *)redistributedCards;
 -(void)gameShouldDealCards:(Game *)game startingWithPlayer:(Player *)startingPlayer;
 -(void)game:(Game *)game didActivatePlayer:(Player *)player;
@@ -64,4 +66,5 @@ GameState;
 -(void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 -(void)beginRound;
 -(void)drawCardForActivePlayer;
+-(void)sendQuestionToClients:(Card *)card;
 @end

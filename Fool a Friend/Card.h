@@ -25,4 +25,5 @@ typedef enum
 
 - (id) initWithQuestion:(NSString *)question answer:(NSString *)answer andCategory:(CardCategory)category;
 - (BOOL)isEqualToCard:(Card *)otherCard;
+-(NSString *)getCategoryText;
 @end

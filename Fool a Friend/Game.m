@@ -189,12 +189,31 @@
         !_busyDealing &&
         !_hasTurnedCard){
         
-        [self turnCardForActivePlayer];
-        
-        if(!self.isServer){
-            Packet *packet = [Packet packetWithType:PacketTypeClientTurnedCard];
-            [self sendPacketToServer:packet];
-        }
+        //[self turnCardForActivePlayer];
+        Card *card = [_deck draw];
+        [self.delegate game:self showCardToReader:card];
+        //if(!self.isServer){
+           // Packet *packet = [Packet packetWithType:PacketTypeClientTurnedCard];
+         //   [self sendPacketToServer:packet];
+       // }
+    }
+}
+-(void)sendQuestionToClients:(Card *)card
+{
+    if(!self.isServer){
+        Packet *packet = [Packet packetWithType:PacketTypeCardRead];
+       [self sendPacketToServer:packet];
+    }else {
+        Packet *packet = [Packet packetWithType:PacketTypeCardRead];
+        [self sendPacketToAllClients:packet];
+    }
+}
+-(void) handleCardReadPacket:(Packet *)packet
+{
+    // make sure the reader doesn't get this message again
+    if (currentUser.peerID != [self playerAtPosition:_activePlayerPosition].peerID){
+        NSLog(@"non reader player");
+        [self.delegate game:self showQuestionToPlayers:[_deck draw]];
     }
 }
 
@@ -410,6 +429,19 @@
     }
 }
 
+-(void) sendPacketToPeer:(Packet *)packet peerID:(NSString *)peerID
+{
+    if(packet.packetNumber != -1){
+        packet.packetNumber = _sendPacketNumber++;
+    }
+    GKSendDataMode dataMode = GKSendDataReliable;
+    NSData *data = [packet data];
+    NSError *error;
+    if (![_session sendData:data toPeers:[NSArray arrayWithObject:peerID] withDataMode:dataMode error:&error]){
+        NSLog(@"Error sending data to server: %@", error);
+    }
+}
+
 -(void)clientReceivedPacket:(Packet *)packet
 {
     switch (packet.packetType){
@@ -454,6 +486,12 @@
         case PacketServerGameReady:
             NSLog(@"All systems GO!!!");
             break;
+        case PacketTypeCardRead:
+            if (_state == GameStatePlaying){
+                [self handleCardReadPacket:packet];
+            }
+            
+            break;
         default:
             break;
     }
@@ -497,6 +535,14 @@
             }
             break;
         case PacketTypeClientQuit:
+            break;
+        case PacketTypeCardRead:
+            if (_state == GameStatePlaying){
+                [self handleCardReadPacket:packet];
+                Packet *packet = [Packet packetWithType:PacketTypeCardRead];
+                [self sendPacketToAllClients:packet];
+            }
+
             break;
 		default:
 			NSLog(@"Server received unexpected packet: %@", packet);

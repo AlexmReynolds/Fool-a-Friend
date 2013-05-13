@@ -16,6 +16,7 @@
 
 -(id) initWithQuestion:(NSString *)question answer:(NSString *)answer andCategory:(CardCategory)category
 {
+    NSLog(@"category from initwithquestion %i", category);
     NSAssert (question.length > 0 && answer.length > 0, @"Invalid card value");
     self = [super init];
     if (self){
@@ -28,5 +29,26 @@
 - (BOOL)isEqualToCard:(Card *)otherCard
 {
 	return (otherCard.question == self.question && otherCard.answer == self.answer);
+}
+
+-(NSString *)getCategoryText
+{
+    NSString *catText;
+    switch(self.category){
+        case Laws:
+            catText = @"Laws";
+            break;
+        case Movies:
+            catText = @"Movies";
+            break;
+        case Events:
+            catText = @"Events";
+            break;
+        case People:
+            catText = @"People";
+            break;
+            
+    }
+    return catText;
 }
 @end
