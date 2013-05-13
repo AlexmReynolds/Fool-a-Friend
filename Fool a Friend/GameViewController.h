@@ -24,6 +24,7 @@
     VotingViewController *_liarViewController;
 }
 
+@property (weak, nonatomic) IBOutlet UIView *cardContainer;
 @property (nonatomic, weak) id <GameViewControllerDelegate> delegate;
 @property (nonatomic, strong) Game *game;
 @property (strong, nonatomic) IBOutlet UITextField *centerLabel;

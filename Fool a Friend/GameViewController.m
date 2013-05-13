@@ -94,7 +94,7 @@
     size_t count = [[[self.game getDeck] getAllCards] count];
     for(int t=0; t < count; ++t){
                 CardView *cardView = [[CardView alloc] initWithFrame:CGRectMake(0,0,CardWidth, CardHeight)];
-                [self.view addSubview:cardView];
+                [self.cardContainer addSubview:cardView];
                 [cardView animateDealingWithDelay:delay];
                 delay += 0.1f;
     }
@@ -114,6 +114,7 @@
 }
 - (void)viewDidUnload {
     [self setCenterLabel:nil];
+    [self setCardContainer:nil];
     [super viewDidUnload];
 }
 
