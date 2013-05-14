@@ -17,7 +17,7 @@
 -(void) gameViewController:(GameViewController *)controller didQuitWithReason:(QuitReason)reason;
 
 @end
-@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, CardViewControllerDelegate>{
+@interface GameViewController : UIViewController <UIAlertViewDelegate, GameDelegate, CardViewControllerDelegate,VotingViewControllerDelegate>{
     NSMutableDictionary *_nameLabels;
         AVAudioPlayer *_dealingCardsSound;
     CardViewController *_readerViewController;

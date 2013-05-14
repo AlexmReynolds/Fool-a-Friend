@@ -16,6 +16,7 @@ typedef enum
 	GameStateWaitingForReady,
 	GameStateDealing,
 	GameStatePlaying,
+    GameStateMakingLies,
 	GameStateGameOver,
 	GameStateQuitting,
 }
@@ -32,11 +33,8 @@ GameState;
 -(void)game:(Game *)game showCardToReader:(Card*)card;
 -(void)game:(Game *)game showQuestionToPlayers:(Card *)card;
 -(void)game:(Game *)game playerDidDisconnect:(Player *)player redistributedCards:(NSDictionary *)redistributedCards;
--(void)gameShouldDealCards:(Game *)game startingWithPlayer:(Player *)startingPlayer;
 -(void)game:(Game *)game didActivatePlayer:(Player *)player;
 -(void)game:(Game *)game player:(Player *)player turnedOverCard:(Card *)card;
-- (void)game:(Game *)game didRecycleCards:(NSArray *)recycledCards forPlayer:(Player *)player;
-- (void)game:(Game *)game playerCalledSnapWithNoMatch:(Player *)player;
 
 @end
 
@@ -48,6 +46,7 @@ GameState;
     int _sendPacketNumber;
     GameState _state;
     Deck *_deck;
+    Card *_currentCard;
     GKSession *_session;
     NSString *_serverPeerID;
     NSString *_clientPeerID;
@@ -67,4 +66,5 @@ GameState;
 -(void)beginRound;
 -(void)drawCardForActivePlayer;
 -(void)sendQuestionToClients:(Card *)card;
+-(void)playerDidAnswer:(NSString *)answer;
 @end

@@ -13,6 +13,8 @@
 #import "PacketServerReady.h"
 #import "PacketSetupGameDeck.h"
 #import "PacketActivatePlayer.h"
+#import "PacketClientLieResponse.h"
+#import "PacketServerSendAnswers.h"
 
 @implementation Packet
 
@@ -64,6 +66,12 @@ const size_t PACKET_HEADER_SIZE = 10;
 			break;
         case PacketTypeSetupGameDeck:
             packet = [PacketSetupGameDeck packetWithData:data];
+            break;
+        case PacketTypeClientAnswer:
+            packet = [PacketClientLieResponse packetWithData:data];
+            break;
+        case PacketTypeAllAnswersSubmitted:
+            packet = [PacketServerSendAnswers packetWithData:data];
             break;
         default:
             NSLog(@"Error: packet has invalid type");

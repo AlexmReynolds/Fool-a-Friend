@@ -66,6 +66,12 @@
     [super viewDidUnload];
 }
 - (IBAction)submitLieAction:(id)sender {
+    if ([self.answerTextView.text length] > 0){
+        [self.delegate playerDidAnswer:self.answerTextView.text];
+    } else {
+        NSLog(@"Answer not long enough");
+    }
+
 }
 
 #pragma mark - UITextField Delegate

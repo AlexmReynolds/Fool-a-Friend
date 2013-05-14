@@ -19,8 +19,5 @@ const CGFloat CardHeight;
 }
 
 @property (nonatomic, strong) Card *card;
--(void) animateTurningOverForPlayer:(Player *)player;
 -(void) animateDealingWithDelay:(NSTimeInterval)delay;
-- (void)animateCloseAndMoveFromPlayer:(Player *)fromPlayer toPlayer:(Player *)toPlayer withDelay:(NSTimeInterval)delay;
-- (void)animateRecycleForPlayer:(Player *)player withDelay:(NSTimeInterval)delay;
 @end

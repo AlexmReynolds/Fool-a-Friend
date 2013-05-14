@@ -15,7 +15,8 @@
 		E740527B173F1685000CC67E /* Back@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E7405279173F1685000CC67E /* Back@2x.png */; };
 		E740527E1740364B000CC67E /* PacketActivatePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = E740527D1740364A000CC67E /* PacketActivatePlayer.m */; };
 		E74052811740A68A000CC67E /* FoolAFriendTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = E74052801740A68A000CC67E /* FoolAFriendTextView.m */; };
-		E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA3173B35F100E155FC /* Communicator.m */; };
+		E74052841741FA19000CC67E /* PacketClientLieResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = E74052831741FA19000CC67E /* PacketClientLieResponse.m */; };
+		E7405287174201D1000CC67E /* PacketServerSendAnswers.m in Sources */ = {isa = PBXBuildFile; fileRef = E7405286174201D0000CC67E /* PacketServerSendAnswers.m */; };
 		E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */; };
 		E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */ = {isa = PBXBuildFile; fileRef = E7D5EFA9173B388500E155FC /* UIFont+FoolAFriend.m */; };
 		E7D5EFAC173B38B700E155FC /* Action_Man.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7D5EFAB173B38B700E155FC /* Action_Man.ttf */; };
@@ -69,8 +70,10 @@
 		E740527D1740364A000CC67E /* PacketActivatePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketActivatePlayer.m; sourceTree = "<group>"; };
 		E740527F1740A68A000CC67E /* FoolAFriendTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FoolAFriendTextView.h; sourceTree = "<group>"; };
 		E74052801740A68A000CC67E /* FoolAFriendTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FoolAFriendTextView.m; sourceTree = "<group>"; };
-		E7D5EFA2173B35F100E155FC /* Communicator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Communicator.h; sourceTree = "<group>"; };
-		E7D5EFA3173B35F100E155FC /* Communicator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Communicator.m; sourceTree = "<group>"; };
+		E74052821741FA19000CC67E /* PacketClientLieResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketClientLieResponse.h; sourceTree = "<group>"; };
+		E74052831741FA19000CC67E /* PacketClientLieResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketClientLieResponse.m; sourceTree = "<group>"; };
+		E7405285174201D0000CC67E /* PacketServerSendAnswers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketServerSendAnswers.h; sourceTree = "<group>"; };
+		E7405286174201D0000CC67E /* PacketServerSendAnswers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketServerSendAnswers.m; sourceTree = "<group>"; };
 		E7D5EFA5173B383F00E155FC /* NSData+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+FoolAFriend.h"; sourceTree = "<group>"; };
 		E7D5EFA6173B383F00E155FC /* NSData+FoolAFriend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+FoolAFriend.m"; sourceTree = "<group>"; };
 		E7D5EFA8173B388500E155FC /* UIFont+FoolAFriend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+FoolAFriend.h"; sourceTree = "<group>"; };
@@ -234,8 +237,10 @@
 				E740526C173F05CC000CC67E /* PacketSetupGameDeck.m */,
 				E7D5EFBD173E1D4D00E155FC /* PacketServerReady.h */,
 				E7D5EFBE173E1D4D00E155FC /* PacketServerReady.m */,
-				E7D5EFA2173B35F100E155FC /* Communicator.h */,
-				E7D5EFA3173B35F100E155FC /* Communicator.m */,
+				E74052821741FA19000CC67E /* PacketClientLieResponse.h */,
+				E74052831741FA19000CC67E /* PacketClientLieResponse.m */,
+				E7405285174201D0000CC67E /* PacketServerSendAnswers.h */,
+				E7405286174201D0000CC67E /* PacketServerSendAnswers.m */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -385,7 +390,6 @@
 				E9ECED0F173AE2050093191E /* Player.m in Sources */,
 				E9ECED12173AE22E0093191E /* Deck.m in Sources */,
 				E9ECED17173AE2AA0093191E /* Packet.m in Sources */,
-				E7D5EFA4173B35F100E155FC /* Communicator.m in Sources */,
 				E7D5EFA7173B383F00E155FC /* NSData+FoolAFriend.m in Sources */,
 				E7D5EFAA173B388500E155FC /* UIFont+FoolAFriend.m in Sources */,
 				E7D5EFAF173B3A5C00E155FC /* Card.m in Sources */,
@@ -398,6 +402,8 @@
 				E7405273173F1350000CC67E /* CardView.m in Sources */,
 				E740527E1740364B000CC67E /* PacketActivatePlayer.m in Sources */,
 				E74052811740A68A000CC67E /* FoolAFriendTextView.m in Sources */,
+				E74052841741FA19000CC67E /* PacketClientLieResponse.m in Sources */,
+				E7405287174201D1000CC67E /* PacketServerSendAnswers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

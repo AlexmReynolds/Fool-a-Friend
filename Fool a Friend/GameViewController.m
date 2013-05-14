@@ -129,6 +129,7 @@
 {
     _liarViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"liarViewController"];
     [_liarViewController loadCard:card];
+    _liarViewController.delegate = self;
     [self presentViewController:_liarViewController animated:YES completion:nil];
 }
 
@@ -136,6 +137,13 @@
 
 -(void)sendQuestionToClients:(Card *)card{
     [self.game sendQuestionToClients:card];
+}
+
+#pragma mark - votingViewController
+
+-(void)playerDidAnswer:(NSString *)answer
+{
+    [self.game playerDidAnswer:answer];
 }
 
 #pragma mark - Sounds

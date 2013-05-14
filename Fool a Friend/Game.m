@@ -11,6 +11,8 @@
 #import "PacketServerReady.h"
 #import "PacketSetupGameDeck.h"
 #import "PacketActivatePlayer.h"
+#import "PacketClientLieResponse.h"
+#import "PacketServerSendAnswers.h"
 
 
 @implementation Game
@@ -191,6 +193,9 @@
         
         //[self turnCardForActivePlayer];
         Card *card = [_deck draw];
+        if (self.isServer){
+            _currentCard = card;
+        }
         [self.delegate game:self showCardToReader:card];
         //if(!self.isServer){
            // Packet *packet = [Packet packetWithType:PacketTypeClientTurnedCard];
@@ -204,17 +209,49 @@
         Packet *packet = [Packet packetWithType:PacketTypeCardRead];
        [self sendPacketToServer:packet];
     }else {
+        _state = GameStateMakingLies;
         Packet *packet = [Packet packetWithType:PacketTypeCardRead];
         [self sendPacketToAllClients:packet];
     }
 }
 -(void) handleCardReadPacket:(Packet *)packet
 {
-    // make sure the reader doesn't get this message again
-    if (currentUser.peerID != [self playerAtPosition:_activePlayerPosition].peerID){
-        NSLog(@"non reader player");
-        [self.delegate game:self showQuestionToPlayers:[_deck draw]];
+    if (_state == GameStatePlaying){
+        _state = GameStateMakingLies;
+        // make sure the reader doesn't get this message again
+        if (currentUser.peerID != [self playerAtPosition:_activePlayerPosition].peerID){
+            NSLog(@"non reader player");
+            Card *card = [_deck draw];
+            if (self.isServer){
+                _currentCard = card;
+            }
+            [self.delegate game:self showQuestionToPlayers:card];
+        }
     }
+
+}
+
+-(void) playerDidAnswer:(NSString *)answer
+{
+    if (self.isServer){
+        Player *player = [self playerWithPeerID:_serverPeerID];
+        player.answer = answer;
+        if ([_players count] <= 2){
+            // only two players so the server must submit the answer
+            Packet *packet = [PacketServerSendAnswers packetWithAnswers:[NSArray arrayWithObject:answer]];
+            [self sendPacketToAllClients:packet];
+        }
+        // Else if player count is more than 2 then wait for all answers
+    } else {
+        Packet *packet = [PacketClientLieResponse packetWithAnswer:answer];
+        [self sendPacketToServer:packet];
+    }
+
+}
+
+-(void)handleAllAnswersFromServerPacket:(Packet *)packet
+{
+    NSArray *answers = ((PacketServerSendAnswers *)packet).answers;
 }
 
 #pragma mark - Player Methods
@@ -492,6 +529,16 @@
             }
             
             break;
+        case PacketTypeAllAnswersSubmitted:
+            if(_state == GameStateMakingLies){
+                _state = GameStatePlaying;
+                [self handleAllAnswersFromServerPacket:packet];
+                NSLog(@"recieved answers from server");
+            } else {
+                NSLog(@"wrong state for all answers");
+            }
+            break;
+            
         default:
             break;
     }
@@ -541,8 +588,21 @@
                 [self handleCardReadPacket:packet];
                 Packet *packet = [Packet packetWithType:PacketTypeCardRead];
                 [self sendPacketToAllClients:packet];
+                // we need to mark the active player as responded since he doesn't send an answer
+                Player *activePlayer = [self activePlayer];
+                activePlayer.answer = _currentCard.answer;
+                activePlayer.receivedResponse = YES;
             }
-
+            break;
+        case PacketTypeClientAnswer:
+            if (_state == GameStateMakingLies){
+                NSLog(@"recieved answer from player");
+                player.answer = ((PacketClientLieResponse *)packet).answer;
+                if ([self receivedResponsesFromAllPlayer]){
+                    NSLog(@"All clients have Answered.");
+                    _state = GameStatePlaying;
+                }
+            }
             break;
 		default:
 			NSLog(@"Server received unexpected packet: %@", packet);

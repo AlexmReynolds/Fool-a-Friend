@@ -18,7 +18,7 @@ typedef enum
 	PacketTypeServerReady,             // server to client
 	PacketTypeClientReady,             // client to server
     
-	PacketTypeClientSpecious,          // client specious answers to server
+	PacketTypeClientAnswer,          // client specious answers to server
 	PacketTypeSetupGameDeck,               // server sends question to clients to answer
     PacketTypeClientDeckSetupResponse,
     PacketServerGameReady,
