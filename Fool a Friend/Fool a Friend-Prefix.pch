@@ -20,6 +20,9 @@
 
 // Returns a random number between 0 and n (inclusive).
 #define RANDOM_INT(n) (arc4random() % (n + 1))
+
+#define isIpad() (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+
 typedef enum
 {
 	QuitReasonNoNetwork,          // no Wi-Fi or Bluetooth

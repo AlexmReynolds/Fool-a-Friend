@@ -50,12 +50,11 @@
 
 -(void) startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients{
     self.isServer = YES;
-    
     _session = session;
     _session.available = NO;
     _session.delegate = self;
     [_session setDataReceiveHandler:self withContext:nil];
-    
+    _serverPeerID = _session.peerID;
     _state = GameStateWaitingForSignIn;
     
     [self.delegate gameWaitingForClientsReady:self];
@@ -69,7 +68,6 @@
     
     int index = 1;
     for (NSString *peerID in clients){
-        NSLog(@"Assign player position %i", index);
         Player *player = [[Player alloc] init];
         player.peerID = peerID;
         player.position = index;
@@ -212,6 +210,9 @@
         _state = GameStateMakingLies;
         Packet *packet = [Packet packetWithType:PacketTypeCardRead];
         [self sendPacketToAllClients:packet];
+        Player *activePlayer = [self activePlayer];
+        activePlayer.answer = _currentCard.answer;
+        activePlayer.receivedResponse = YES;
     }
 }
 -(void) handleCardReadPacket:(Packet *)packet
@@ -231,15 +232,22 @@
 
 }
 
+// Called when the player hits the submit buttons on the voting/lying screen
 -(void) playerDidAnswer:(NSString *)answer
 {
     if (self.isServer){
+        NSLog(@"here");
         Player *player = [self playerWithPeerID:_serverPeerID];
+        NSLog(@"server peer id %@", _serverPeerID);
         player.answer = answer;
-        if ([_players count] <= 2){
-            // only two players so the server must submit the answer
-            Packet *packet = [PacketServerSendAnswers packetWithAnswers:[NSArray arrayWithObject:answer]];
-            [self sendPacketToAllClients:packet];
+        NSLog(@"now here");
+        for (NSString *peerID in _players){
+            Player *_player = [_players objectForKey:peerID];
+            NSLog(@"answer is %@ for player %@", _player.answer, _player.name);
+        }
+        if ([self allPlayersHaveAnswered]){
+            NSLog(@"all answers in");
+            [self sendAnswersToClients];
         }
         // Else if player count is more than 2 then wait for all answers
     } else {
@@ -249,9 +257,53 @@
 
 }
 
+-(BOOL) allPlayersHaveAnswered
+{
+    for (NSString *peerID in _players){
+        Player *player = [self playerWithPeerID:peerID];
+        if (!player.answer){
+            return NO;
+        }
+    }
+    return YES;
+}
+
+-(void)sendAnswersToClients
+{
+    NSAssert(self.isServer, @"Must Be Server");
+    NSMutableArray *answers = [NSMutableArray arrayWithCapacity:[_players count]];
+    [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
+        
+        [answers addObject:[NSDictionary dictionaryWithObjectsAndKeys:obj.answer,@"answer",obj.name,@"name", nil]];
+    }];
+    NSLog(@"send answers to clients");
+    Packet *packet = [PacketServerSendAnswers packetWithAnswers:answers];
+    [self sendPacketToAllClients:packet];
+    
+    // If the server is the reader then load up the answers for reading
+    if ([currentUser.peerID isEqualToString:[self activePlayer].peerID]){
+        [self.delegate game:self loadAnswersForReader:answers];
+    } else {
+        [self.delegate game:self loadAnswersForLiars:answers];
+    }
+
+}
+
 -(void)handleAllAnswersFromServerPacket:(Packet *)packet
 {
+    NSLog(@"alll answer method");
+    
     NSArray *answers = ((PacketServerSendAnswers *)packet).answers;
+
+    // If the current client is the reader then load up the answers to read.
+    if ([currentUser.peerID isEqualToString:[self activePlayer].peerID]){
+        [self.delegate game:self loadAnswersForReader:answers];
+    } else {
+        [self.delegate game:self loadAnswersForLiars:answers];
+    }
+    for (NSDictionary *response in answers){
+        NSLog(@"unpacking answer %@ for player %@", [response valueForKey:@"answer"],[response valueForKey:@"name"]);
+    }
 }
 
 #pragma mark - Player Methods
@@ -588,6 +640,7 @@
                 [self handleCardReadPacket:packet];
                 Packet *packet = [Packet packetWithType:PacketTypeCardRead];
                 [self sendPacketToAllClients:packet];
+                NSLog(@"active player card read add the real answer to this player");
                 // we need to mark the active player as responded since he doesn't send an answer
                 Player *activePlayer = [self activePlayer];
                 activePlayer.answer = _currentCard.answer;
@@ -596,11 +649,13 @@
             break;
         case PacketTypeClientAnswer:
             if (_state == GameStateMakingLies){
-                NSLog(@"recieved answer from player");
+
                 player.answer = ((PacketClientLieResponse *)packet).answer;
-                if ([self receivedResponsesFromAllPlayer]){
+                NSLog(@"recieved answer from player %@", player.answer);
+                if ([self allPlayersHaveAnswered]){
                     NSLog(@"All clients have Answered.");
                     _state = GameStatePlaying;
+                    [self sendAnswersToClients];
                 }
             }
             break;

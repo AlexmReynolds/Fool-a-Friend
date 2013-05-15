@@ -31,8 +31,11 @@
     for (int t = 0; t < answersCount; ++t){
         NSString *answer = [data ar_stringAtOffset:offset bytesRead:&count];
         offset += count;
+        NSString *name = [data ar_stringAtOffset:offset bytesRead:&count];
+        offset += count;
+        
         NSLog(@"answer from packet is %@", answer);
-        [array addObject:answer];
+        [array addObject:[NSDictionary dictionaryWithObjectsAndKeys:answer,@"answer",name,@"name", nil]];
     }
 	return [[self class] packetWithAnswers:array];
 }
@@ -40,8 +43,9 @@
 - (void)addPayloadToData:(NSMutableData *)data
 {
     [data ar_appendInt8:[self.answers count]];
-    for (NSString *answer in self.answers){
-        [data ar_appendString:answer];
+    for (NSDictionary *response in self.answers){
+        [data ar_appendString:[response valueForKey:@"answer"]];
+        [data ar_appendString:[response valueForKey:@"name"]];
     }
 
 }

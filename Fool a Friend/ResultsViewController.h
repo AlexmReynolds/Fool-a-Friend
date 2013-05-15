@@ -10,4 +10,9 @@
 
 @interface ResultsViewController : UIViewController
 
+@property (nonatomic, strong) NSArray *answers;
+-(void)loadAnswers:(NSArray *)answers;
+
+
+@property (weak, nonatomic) IBOutlet UITableView *theTableView;
 @end

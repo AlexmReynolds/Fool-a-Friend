@@ -7,6 +7,7 @@
 //
 
 #import "CardViewController.h"
+#import "ResultsViewController.h"
 
 @interface CardViewController ()
 
@@ -48,6 +49,11 @@
 
 - (IBAction)startAnswersAction:(id)sender {
     [self.delegate sendQuestionToClients:_card];
+    
+    if (!isIpad()){
+        _resultsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsViewController"];
+        [self presentViewController:_resultsViewController animated:YES completion:nil];
+    }
 }
 
 - (IBAction)toggleAnswerPlayerNames:(id)sender {
@@ -60,6 +66,17 @@
 
 }
 
+-(void)loadAnswers:(NSArray *)answers
+{
+    
+    _answers = answers;
+    if (isIpad()){
+        [self.theTableView reloadData];
+    } else {
+        [_resultsViewController loadAnswers:answers];
+    }
+}
+
 - (void)viewDidUnload {
     [self setQuestionLabel:nil];
     [self setCategoryLabel:nil];
@@ -70,7 +87,11 @@
 #pragma mark - TableDelegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 0;
+    if (_answers){
+        return [_answers count];
+    } else {
+        return 0;
+    }
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -80,6 +101,8 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    cell.textLabel.text = [[_answers objectAtIndex:indexPath.row] objectForKey:@"answer"];
+    
     return cell;
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{

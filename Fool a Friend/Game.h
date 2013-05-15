@@ -35,6 +35,8 @@ GameState;
 -(void)game:(Game *)game playerDidDisconnect:(Player *)player redistributedCards:(NSDictionary *)redistributedCards;
 -(void)game:(Game *)game didActivatePlayer:(Player *)player;
 -(void)game:(Game *)game player:(Player *)player turnedOverCard:(Card *)card;
+-(void)game:(Game *)game loadAnswersForReader:(NSArray *)answers;
+-(void)game:(Game *)game loadAnswersForLiars:(NSArray *)answers;
 
 @end
 

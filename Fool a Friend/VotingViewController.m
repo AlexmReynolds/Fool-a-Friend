@@ -8,6 +8,7 @@
 
 #import "VotingViewController.h"
 
+
 @interface VotingViewController ()
 
 @end
@@ -71,7 +72,21 @@
     } else {
         NSLog(@"Answer not long enough");
     }
+    if (!isIpad()){
+        _resultsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsViewController"];
+        [self presentViewController:_resultsViewController animated:YES completion:nil];
+    }
 
+}
+
+-(void)loadAnswers:(NSArray *)answers
+{
+    _answers = answers;
+    if (isIpad()){
+        [self.ipadTheTableView reloadData];
+    } else {
+        [_resultsViewController loadAnswers:answers];
+    }
 }
 
 #pragma mark - UITextField Delegate
@@ -86,7 +101,12 @@
 #pragma mark - TableDelegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 0;
+    if (_answers){
+        return [_answers count];
+    } else {
+        return 0;
+    }
+
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -96,6 +116,9 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
+    
+    cell.textLabel.text = [[_answers objectAtIndex:indexPath.row] objectForKey:@"answer"];
+    
     return cell;
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{

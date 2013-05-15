@@ -133,6 +133,17 @@
     [self presentViewController:_liarViewController animated:YES completion:nil];
 }
 
+-(void)game:(Game *)game loadAnswersForReader:(NSArray *)answers
+{
+    NSLog(@"load answers to reader");
+    [_readerViewController loadAnswers:answers];
+}
+-(void)game:(Game *)game loadAnswersForLiars:(NSArray *)answers
+{
+    NSLog(@"load answers to liar");
+    [_liarViewController loadAnswers:answers];
+}
+
 #pragma mark - cardviewcontroller
 
 -(void)sendQuestionToClients:(Card *)card{

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Card.h"
+#import "ResultsViewController.h"
 @class VotingViewController;
 
 @protocol VotingViewControllerDelegate <NSObject>
@@ -17,6 +18,8 @@
 @end
 @interface VotingViewController : UIViewController{
     Card *_card;
+    NSArray *_answers;
+    ResultsViewController *_resultsViewController;
 }
 
 
@@ -26,5 +29,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *answerTextView;
 @property (weak, nonatomic) id <VotingViewControllerDelegate> delegate;
 - (IBAction)submitLieAction:(id)sender;
+-(void)loadAnswers:(NSArray *)answers;
 
 @end

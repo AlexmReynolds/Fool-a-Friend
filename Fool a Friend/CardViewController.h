@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Card.h"
+#import "ResultsViewController.h"
 @class CardViewController;
 
 @protocol CardViewControllerDelegate <NSObject>
@@ -17,6 +18,8 @@
 @end
 @interface CardViewController : UIViewController{
     Card *_card;
+    NSArray *_answers;
+    ResultsViewController *_resultsViewController;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *theTableView;
@@ -27,4 +30,5 @@
 - (IBAction)toggleAnswerPlayerNames:(id)sender;
 
 -(void)loadCard:(Card *)card;
+-(void)loadAnswers:(NSArray *)answers;
 @end
