@@ -51,6 +51,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketServerGameReady:
         case PacketTypeCardRead:
         case PacketTypeClientTurnedCard:
+        case PacketTypeOpenVoting:
             packet = [Packet packetWithType:packetType];
             break;
         case PacketTypeSignInResponse:

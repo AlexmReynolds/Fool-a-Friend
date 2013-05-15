@@ -7,12 +7,24 @@
 //
 
 #import <UIKit/UIKit.h>
+@class ResultsViewController;
 
-@interface ResultsViewController : UIViewController
+@protocol ResultsViewControllerDelegate <NSObject>
+
+-(void)sendAnswersToVote;
+
+@end
+@interface ResultsViewController : UIViewController{
+    UIButton *_goVoteButton;
+}
 
 @property (nonatomic, strong) NSArray *answers;
 -(void)loadAnswers:(NSArray *)answers;
 
 
 @property (weak, nonatomic) IBOutlet UITableView *theTableView;
+@property (assign, nonatomic) BOOL isReader;
+@property (weak, nonatomic) id <ResultsViewControllerDelegate> delegate;
+
+-(void) showAnswers;
 @end

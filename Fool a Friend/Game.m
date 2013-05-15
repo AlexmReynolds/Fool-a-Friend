@@ -306,6 +306,21 @@
     }
 }
 
+-(void)sendAnswersToVote
+{
+    if(self.isServer){
+        if (_serverPeerID != [self activePlayer].peerID){
+            [self.delegate revealAnswersForVoting];
+        }
+        Packet *packet = [Packet packetWithType:PacketTypeOpenVoting];
+        [self sendPacketToAllClients:packet];
+    } else {
+        Packet *packet = [Packet packetWithType:PacketTypeOpenVoting];
+        [self sendPacketToServer:packet];
+    }
+
+}
+
 #pragma mark - Player Methods
 
 -(Player *)activePlayer
@@ -590,6 +605,9 @@
                 NSLog(@"wrong state for all answers");
             }
             break;
+        case PacketTypeOpenVoting:
+                [self.delegate revealAnswersForVoting];
+            break;
             
         default:
             break;
@@ -658,6 +676,12 @@
                     [self sendAnswersToClients];
                 }
             }
+            break;
+        case PacketTypeOpenVoting:
+            if(_state == GameStatePlaying){
+                [self sendAnswersToVote];
+            }
+
             break;
 		default:
 			NSLog(@"Server received unexpected packet: %@", packet);

@@ -51,12 +51,19 @@
     [self.delegate sendQuestionToClients:_card];
     
     if (!isIpad()){
+        NSLog(@"here in init results viewc");
         _resultsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsViewController"];
+        _resultsViewController.delegate = self;
+        _resultsViewController.isReader = YES;
         [self presentViewController:_resultsViewController animated:YES completion:nil];
     }
 }
 
 - (IBAction)toggleAnswerPlayerNames:(id)sender {
+}
+
+- (IBAction)openVotingAction:(id)sender {
+    [self.delegate sendAnswersToVote];
 }
 
 -(void)loadCard:(Card *)card
@@ -74,6 +81,7 @@
         [self.theTableView reloadData];
     } else {
         [_resultsViewController loadAnswers:answers];
+        [_resultsViewController showAnswers];
     }
 }
 
@@ -81,6 +89,8 @@
     [self setQuestionLabel:nil];
     [self setCategoryLabel:nil];
     [self setTheTableView:nil];
+    [self setVotingButton:nil];
+    [self setShowPlayerNamesButton:nil];
     [super viewDidUnload];
 }
 
@@ -107,5 +117,13 @@
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     return nil;
+}
+
+#pragma mark - ResultsView Delegate
+
+-(void)sendAnswersToVote
+{
+    NSLog(@"go vote from card view");
+    [self.delegate sendAnswersToVote];
 }
 @end

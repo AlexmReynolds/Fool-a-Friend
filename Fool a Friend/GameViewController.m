@@ -144,10 +144,20 @@
     [_liarViewController loadAnswers:answers];
 }
 
+-(void)revealAnswersForVoting
+{
+    [_liarViewController revealAnswers];
+}
+
 #pragma mark - cardviewcontroller
 
 -(void)sendQuestionToClients:(Card *)card{
     [self.game sendQuestionToClients:card];
+}
+-(void) sendAnswersToVote
+{
+    NSLog(@"go vote from game view");
+    [self.game sendAnswersToVote];
 }
 
 #pragma mark - votingViewController

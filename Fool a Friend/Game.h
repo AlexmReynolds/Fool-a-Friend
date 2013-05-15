@@ -37,6 +37,7 @@ GameState;
 -(void)game:(Game *)game player:(Player *)player turnedOverCard:(Card *)card;
 -(void)game:(Game *)game loadAnswersForReader:(NSArray *)answers;
 -(void)game:(Game *)game loadAnswersForLiars:(NSArray *)answers;
+-(void)revealAnswersForVoting;
 
 @end
 
@@ -69,4 +70,5 @@ GameState;
 -(void)drawCardForActivePlayer;
 -(void)sendQuestionToClients:(Card *)card;
 -(void)playerDidAnswer:(NSString *)answer;
+-(void)sendAnswersToVote;
 @end

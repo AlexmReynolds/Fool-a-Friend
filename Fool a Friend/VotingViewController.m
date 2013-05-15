@@ -82,13 +82,19 @@
 -(void)loadAnswers:(NSArray *)answers
 {
     _answers = answers;
-    if (isIpad()){
-        [self.ipadTheTableView reloadData];
-    } else {
+    if (!isIpad()){
         [_resultsViewController loadAnswers:answers];
     }
 }
 
+-(void) revealAnswers
+{
+    if (isIpad()){
+        [self.ipadTheTableView reloadData];
+    } else {
+        [_resultsViewController showAnswers];
+    }
+}
 #pragma mark - UITextField Delegate
 
 -(void) textViewDidBeginEditing:(UITextView *)textView
@@ -123,5 +129,8 @@
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     return nil;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
 }
 @end

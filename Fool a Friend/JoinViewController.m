@@ -26,6 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _hostSelected = NO;
 	// Do any additional setup after loading the view.
 }
 
@@ -74,7 +75,10 @@
 -(void) matchmakingClient:(MatchMakingClient *)client didConnectToServer:(NSString *)peerID{
     NSLog(@"did connect");
     NSString *name = [self.nameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    NSLog(@"name is %@", name);
+    NSLog(@"name is from field %@", self.nameTextField.text);
     if ([name length] == 0){
+        NSLog(@"in the if");
         name = _matchmakingClient.session.displayName;
     }
     [self.delegate joinViewController:self startGameWithSession:_matchmakingClient.session playerName:name server:peerID];

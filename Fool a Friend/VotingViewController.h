@@ -30,5 +30,6 @@
 @property (weak, nonatomic) id <VotingViewControllerDelegate> delegate;
 - (IBAction)submitLieAction:(id)sender;
 -(void)loadAnswers:(NSArray *)answers;
+-(void)revealAnswers;
 
 @end

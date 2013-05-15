@@ -21,6 +21,7 @@
 @private
     MatchMakingClient *_matchmakingClient;
     QuitReason _quitReason;
+    BOOL _hostSelected;
 }
 
 

@@ -23,11 +23,32 @@
     }
     return self;
 }
+-(id) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self){
+        self.isReader = NO;
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    NSLog(@"add button to results");
+    if (self.isReader){
+        NSLog(@"inside if");
+        _goVoteButton = [[UIButton alloc] initWithFrame:CGRectMake((self.view.frame.size.width - 100)/2,
+                                                                     self.view.frame.size.height-70,
+                                                                     100,
+                                                                     44)];
+        [_goVoteButton setTitle:@"Go Vote" forState:UIControlStateNormal];
+        [_goVoteButton addTarget:self action:@selector(goVoteAction:) forControlEvents:UIControlEventTouchUpInside];
+        _goVoteButton.backgroundColor = [UIColor redColor];
+        _goVoteButton.enabled = NO;
+        [self.view addSubview:_goVoteButton];
+        
+    }
 	// Do any additional setup after loading the view.
 }
 
@@ -44,9 +65,20 @@
 
 -(void)loadAnswers:(NSArray *)answers{
     _answers = answers;
-    [self.theTableView reloadData];
 }
 
+-(void)showAnswers
+{
+    if(_goVoteButton){
+        _goVoteButton.enabled = YES;
+    }
+    [self.theTableView reloadData];
+}
+-(void)goVoteAction:(id)sender
+{
+    NSLog(@"go vote");
+    [self.delegate sendAnswersToVote];
+}
 
 #pragma mark - TableDelegate
 
@@ -73,5 +105,8 @@
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     return nil;
+}
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
 }
 @end
