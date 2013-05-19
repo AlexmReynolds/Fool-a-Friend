@@ -31,6 +31,9 @@
 		E7D5EFC9173EDDE100E155FC /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = E7D5EFC8173EDDE100E155FC /* icon114.png */; };
 		E7D5EFCB173EDDEB00E155FC /* icon72.png in Resources */ = {isa = PBXBuildFile; fileRef = E7D5EFCA173EDDEB00E155FC /* icon72.png */; };
 		E7D5EFCD173EDE2E00E155FC /* icon144.png in Resources */ = {isa = PBXBuildFile; fileRef = E7D5EFCC173EDE2E00E155FC /* icon144.png */; };
+		E7ED8D0C174820940062AD1A /* PacketClientSubmitVote.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED8D0B174820940062AD1A /* PacketClientSubmitVote.m */; };
+		E7ED8D0F17482DAA0062AD1A /* PacketServerSendVotes.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED8D0E17482DA90062AD1A /* PacketServerSendVotes.m */; };
+		E7ED8D121748A1F80062AD1A /* PacketTurnEnded.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ED8D111748A1F80062AD1A /* PacketTurnEnded.m */; };
 		E9ECECC7173AE0330093191E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC6173AE0330093191E /* UIKit.framework */; };
 		E9ECECC9173AE0330093191E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECC8173AE0330093191E /* Foundation.framework */; };
 		E9ECECCB173AE0330093191E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E9ECECCA173AE0330093191E /* CoreGraphics.framework */; };
@@ -95,6 +98,12 @@
 		E7D5EFC8173EDDE100E155FC /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
 		E7D5EFCA173EDDEB00E155FC /* icon72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon72.png; sourceTree = "<group>"; };
 		E7D5EFCC173EDE2E00E155FC /* icon144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon144.png; sourceTree = "<group>"; };
+		E7ED8D0A174820940062AD1A /* PacketClientSubmitVote.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketClientSubmitVote.h; sourceTree = "<group>"; };
+		E7ED8D0B174820940062AD1A /* PacketClientSubmitVote.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketClientSubmitVote.m; sourceTree = "<group>"; };
+		E7ED8D0D17482DA90062AD1A /* PacketServerSendVotes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketServerSendVotes.h; sourceTree = "<group>"; };
+		E7ED8D0E17482DA90062AD1A /* PacketServerSendVotes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketServerSendVotes.m; sourceTree = "<group>"; };
+		E7ED8D101748A1F80062AD1A /* PacketTurnEnded.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PacketTurnEnded.h; sourceTree = "<group>"; };
+		E7ED8D111748A1F80062AD1A /* PacketTurnEnded.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PacketTurnEnded.m; sourceTree = "<group>"; };
 		E9ECECC3173AE0330093191E /* Fool a Friend.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fool a Friend.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		E9ECECC6173AE0330093191E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		E9ECECC8173AE0330093191E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -229,6 +238,8 @@
 				E7D5EFB3173B3C5B00E155FC /* MatchMakingClient.m */,
 				E740527C1740364A000CC67E /* PacketActivatePlayer.h */,
 				E740527D1740364A000CC67E /* PacketActivatePlayer.m */,
+				E7ED8D101748A1F80062AD1A /* PacketTurnEnded.h */,
+				E7ED8D111748A1F80062AD1A /* PacketTurnEnded.m */,
 				E9ECED15173AE2AA0093191E /* Packet.h */,
 				E9ECED16173AE2AA0093191E /* Packet.m */,
 				E7D5EFBA173E1BBD00E155FC /* PacketSignInResponse.h */,
@@ -241,6 +252,10 @@
 				E74052831741FA19000CC67E /* PacketClientLieResponse.m */,
 				E7405285174201D0000CC67E /* PacketServerSendAnswers.h */,
 				E7405286174201D0000CC67E /* PacketServerSendAnswers.m */,
+				E7ED8D0A174820940062AD1A /* PacketClientSubmitVote.h */,
+				E7ED8D0B174820940062AD1A /* PacketClientSubmitVote.m */,
+				E7ED8D0D17482DA90062AD1A /* PacketServerSendVotes.h */,
+				E7ED8D0E17482DA90062AD1A /* PacketServerSendVotes.m */,
 			);
 			name = Networking;
 			sourceTree = "<group>";
@@ -404,6 +419,9 @@
 				E74052811740A68A000CC67E /* FoolAFriendTextView.m in Sources */,
 				E74052841741FA19000CC67E /* PacketClientLieResponse.m in Sources */,
 				E7405287174201D1000CC67E /* PacketServerSendAnswers.m in Sources */,
+				E7ED8D0C174820940062AD1A /* PacketClientSubmitVote.m in Sources */,
+				E7ED8D0F17482DAA0062AD1A /* PacketServerSendVotes.m in Sources */,
+				E7ED8D121748A1F80062AD1A /* PacketTurnEnded.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

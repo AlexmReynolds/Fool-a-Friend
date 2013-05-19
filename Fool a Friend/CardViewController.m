@@ -27,6 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _showPlayerNames = NO;
     self.categoryLabel.text = [_card getCategoryText];
     [self loadQuestion];
     NSLog(@"cat is %@",[_card getCategoryText]);
@@ -60,12 +61,29 @@
 }
 
 - (IBAction)toggleAnswerPlayerNames:(id)sender {
+    _showPlayerNames = !_showPlayerNames;
+    [self.theTableView reloadData];
 }
 
 - (IBAction)openVotingAction:(id)sender {
     [self.delegate sendAnswersToVote];
+    self.votingButton.hidden = YES;
+    
+    UIButton *nextRoundBtn = [[UIButton alloc] initWithFrame:self.votingButton.frame];
+    [nextRoundBtn setTitle:@"Next Round" forState:UIControlStateNormal];
+    [nextRoundBtn addTarget:self action:@selector(goNextRound) forControlEvents:UIControlEventTouchUpInside];
+    nextRoundBtn.backgroundColor = [UIColor redColor];
+    [self.view addSubview:nextRoundBtn];
 }
-
+-(void) goNextRound
+{
+    [self.delegate beginNextRound];
+    [self dismissViewControllerAnimated:NO completion:nil];
+}
+-(void)beginNextRound
+{
+    [self.delegate beginNextRound];
+}
 -(void)loadCard:(Card *)card
 {
     NSLog(@"load card %@ cat:%i", card.question, card.category);
@@ -84,6 +102,15 @@
         [_resultsViewController showAnswers];
     }
 }
+-(void)updateVotes:(NSArray *)votes
+{
+    _votes = votes;
+    if (isIpad()){
+        [self.theTableView reloadData];
+    } else {
+        [_resultsViewController updateVotes:votes];
+    }
+}
 
 - (void)viewDidUnload {
     [self setQuestionLabel:nil];
@@ -93,7 +120,34 @@
     [self setShowPlayerNamesButton:nil];
     [super viewDidUnload];
 }
+-(NSString *)getVotesForPeerID:(NSString *)peerID
+{
+    NSLog(@"get votes from card view controller %@", _votes);
+        NSLog(@"peer ID is %@", peerID);
+    NSString *votesString = @"";
+    if (_votes){
+        for (NSDictionary *vote in _votes){
+            NSLog(@"in loop");
+            if ([[vote objectForKey:@"peerID"] isEqualToString:peerID]){
+                NSLog(@"found player %@ votes:%@", [vote objectForKey:peerID], [vote objectForKey:@"votes"]);
+                votesString = [NSString stringWithFormat:@"(%@)",[vote objectForKey:@"votes"]];
+                
+            }
+        }
+    }
+        NSLog(@"vote string is %@", votesString);
+    return votesString;
+}
 
+-(void) gameTurnEnded:(void (^) (BOOL finished))completion{
+    if (nil != _resultsViewController){
+        [_resultsViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+    [self dismissViewControllerAnimated:NO completion:nil];
+    if (completion){
+        completion(YES);
+    }
+}
 #pragma mark - TableDelegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -111,7 +165,12 @@
     if(cell == nil){
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
-    cell.textLabel.text = [[_answers objectAtIndex:indexPath.row] objectForKey:@"answer"];
+    NSString *answer = [[_answers objectAtIndex:indexPath.row] objectForKey:@"answer"];
+    NSString *peerID = [[_answers objectAtIndex:indexPath.row] objectForKey:@"peerID"];
+    NSString *name = _showPlayerNames ?  [[_answers objectAtIndex:indexPath.row] objectForKey:@"name"] : @"";
+    NSString *votes = [self getVotesForPeerID:peerID];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"%@ %@ %@", answer, votes, name];
     
     return cell;
 }

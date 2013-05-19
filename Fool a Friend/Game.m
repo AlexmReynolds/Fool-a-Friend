@@ -13,6 +13,9 @@
 #import "PacketActivatePlayer.h"
 #import "PacketClientLieResponse.h"
 #import "PacketServerSendAnswers.h"
+#import "PacketClientSubmitVote.h"
+#import "PacketServerSendVotes.h"
+#import "PacketTurnEnded.h"
 
 
 @implementation Game
@@ -81,6 +84,7 @@
 
 -(void) beginGame
 {
+    _tempPointsArray = [NSMutableArray arrayWithCapacity:[_players count]];
     _busyDealing = YES;
     _firstTime = YES;
     _state = GameStateDealing;
@@ -171,6 +175,17 @@
     _hasTurnedCard = NO;
     [self activatePlayerAtPosition:_activePlayerPosition];
 }
+-(void)beginNextRound
+{
+    if (self.isServer){
+        Packet *packet = [PacketTurnEnded packetWithPlayers:_players];
+        [self sendPacketToAllClients:packet];
+        _state = GameStateWaitingForNextTurn;
+    } else {
+        Packet *packet = [Packet packetWithType:PacketTypeClientTurnEnded];
+        [self sendPacketToServer:packet];
+    }
+}
 -(void) turnCardForActivePlayer
 {
     NSLog(@" turn card !!!!!");
@@ -231,7 +246,26 @@
     }
 
 }
-
+-(void)handleAllVotesSubmittedPacket:(Packet*)packet
+{
+    [self.delegate game:self allVotesSubmitted:((PacketServerSendVotes *)packet).votes];
+}
+-(void)handleTurnEnded
+{
+    if (self.isServer){
+        NSLog(@"clear old answers");
+        for (NSDictionary *votes in _tempPointsArray){
+            Player *player = [self playerWithPeerID:[votes objectForKey:@"peerID"]];
+            player.points += [[votes objectForKey:@"votes"] intValue];
+        }
+        [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
+            obj.hasVoted = NO;
+            obj.answer = nil;
+        }];
+        [_tempPointsArray removeAllObjects];
+    }
+    [self.delegate gameTurnEnded];
+}
 // Called when the player hits the submit buttons on the voting/lying screen
 -(void) playerDidAnswer:(NSString *)answer
 {
@@ -267,6 +301,19 @@
     }
     return YES;
 }
+-(BOOL) allPlayersHaveVoted
+{
+    for (NSString *peerID in _players){
+        Player *player = [self playerWithPeerID:peerID];
+        if (![player.peerID isEqualToString:[self activePlayer].peerID]){
+            if (!player.hasVoted){
+                return NO;
+            }
+        }
+
+    }
+    return YES;
+}
 
 -(void)sendAnswersToClients
 {
@@ -274,7 +321,7 @@
     NSMutableArray *answers = [NSMutableArray arrayWithCapacity:[_players count]];
     [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
         
-        [answers addObject:[NSDictionary dictionaryWithObjectsAndKeys:obj.answer,@"answer",obj.name,@"name", nil]];
+        [answers addObject:[NSDictionary dictionaryWithObjectsAndKeys:obj.answer,@"answer",obj.name,@"name",obj.peerID,@"peerID", nil]];
     }];
     NSLog(@"send answers to clients");
     Packet *packet = [PacketServerSendAnswers packetWithAnswers:answers];
@@ -286,7 +333,8 @@
     } else {
         [self.delegate game:self loadAnswersForLiars:answers];
     }
-
+    // all lying is done set game state back to playing
+    _state = GameStatePlaying;
 }
 
 -(void)handleAllAnswersFromServerPacket:(Packet *)packet
@@ -309,13 +357,67 @@
 -(void)sendAnswersToVote
 {
     if(self.isServer){
+        NSLog(@"server id %@ and active id %@", _serverPeerID,[self activePlayer].peerID );
         if (_serverPeerID != [self activePlayer].peerID){
             [self.delegate revealAnswersForVoting];
         }
+        NSLog(@"server send to clients");
         Packet *packet = [Packet packetWithType:PacketTypeOpenVoting];
         [self sendPacketToAllClients:packet];
     } else {
         Packet *packet = [Packet packetWithType:PacketTypeOpenVoting];
+        [self sendPacketToServer:packet];
+    }
+
+}
+
+-(void) userVotedForPeer:(id)peerID
+{
+    if(self.isServer){
+        Player *_server = [self playerWithPeerID:_serverPeerID];
+        _server.hasVoted = YES;
+        [self addVoteForPlayer:peerID];
+        if ([self allPlayersHaveVoted]){
+            NSLog(@"all votes in send to player");
+            Packet *packet = [PacketServerSendVotes packetWithVotes:_tempPointsArray];
+            [self sendPacketToPeer:packet peerID:[self activePlayer].peerID];
+        }
+    } else {
+        PacketClientSubmitVote *packet = [PacketClientSubmitVote packetWithVote:peerID];
+        [self sendPacketToServer:packet];
+    }
+    
+}
+
+-(void) addVoteForPlayer:(NSString *)peerID
+{
+    NSMutableArray *tempArry = [_tempPointsArray copy];
+    int idx = 0;
+    BOOL found = NO;
+    for (NSMutableDictionary *_temp in tempArry){
+        if ([[_temp objectForKey:@"peerID"] isEqualToString:peerID] ){
+            int votes = [[_temp objectForKey:@"votes"] intValue];
+            votes++;
+            [[_tempPointsArray objectAtIndex:idx] setObject:[NSNumber numberWithInt:votes] forKey:@"votes"];
+            found = YES;
+            
+        }
+        idx++;
+    }
+    if (!found){
+        NSLog(@"add vote not in array");
+        NSMutableDictionary *vote = [[NSMutableDictionary alloc] init];
+        [vote setObject:peerID forKey:@"peerID"];
+        [vote setObject:[NSNumber numberWithInt:1] forKey:@"votes"];
+        [_tempPointsArray addObject:vote];
+    }
+    NSLog(@"votes %@", _tempPointsArray);
+}
+
+-(void)clientReadyForNextTurn
+{
+    if(!self.isServer){
+        Packet *packet = [Packet packetWithType:PacketTypeClientReady];
         [self sendPacketToServer:packet];
     }
 
@@ -395,7 +497,7 @@
 -(void)activateNextPlayer
 {
     NSAssert(self.isServer, @"Must be server");
-    NSLog(@"activate next player");
+    NSLog(@"activate next player old position is %i", _activePlayerPosition);
     while(true){
         _activePlayerPosition ++;
         if (_activePlayerPosition > ([_players count] -1)){
@@ -403,15 +505,10 @@
         }
         
         Player *nextPlayer = [self activePlayer];
-        if (nextPlayer != nil){
-            if([nextPlayer.closedCards cardCount] > 0){
-                [self activatePlayerAtPosition:_activePlayerPosition];
-                return;
-            }else {
-                [self activatePlayerAtPosition:_activePlayerPosition];
-                return;
-            }
-            
+        if (nextPlayer != nil && [_deck cardsRemaining] > 0){
+            NSLog(@"active %@", nextPlayer.name);
+            [self activatePlayerAtPosition:_activePlayerPosition];
+            return;
         }
     }
 }
@@ -440,13 +537,34 @@
 
 #pragma mark - GKSessionDelegate
 
+-(void)clientDidDisconnect:(NSString *)peerID
+{
+    if(_state != GameStateQuitting){
+        Player *player = [self playerWithPeerID:peerID];
+        if (player != nil){
+            [_players removeObjectForKey:peerID];
+            
+            if (_state != GameStateWaitingForSignIn){
+                
+                if (self.isServer){
+
+                }
+
+                
+                if (self.isServer && player.position == _activePlayerPosition)
+                    [self activateNextPlayer];
+            }
+            
+        }
+    }
+}
 -(void)session:(GKSession *)session peer:(NSString *)peerID didChangeState:(GKPeerConnectionState)state{
 #ifdef DEBUG
     NSLog(@"Game: peer %@ changed state %d", peerID, state);
 #endif
     if (state == GKPeerStateDisconnected){
         if (self.isServer){
-            //[self clientDidDisconnect:peerID redistributedCards:nil];
+            [self clientDidDisconnect:peerID];
         }
         else if ([peerID isEqualToString:_serverPeerID]){
             [self quitGameWithReason:QuitReasonConnectionDropped];
@@ -608,7 +726,17 @@
         case PacketTypeOpenVoting:
                 [self.delegate revealAnswersForVoting];
             break;
-            
+        case PacketTypeAllVotesSubmitted:
+            NSLog(@"player recieved votes packet should be reader");
+            [self handleAllVotesSubmittedPacket:packet];
+            break;
+        case PacketTypeServerTurnEnded:
+            NSLog(@"activate next player since turn is over");
+            if (_state == GameStatePlaying){
+                _players = ((PacketTurnEnded *)packet).players;
+                [self handleTurnEnded];
+                
+            }
         default:
             break;
     }
@@ -634,7 +762,15 @@
         case PacketTypeClientReady:
             if (_state == GameStateWaitingForReady && [self receivedResponsesFromAllPlayer]){
                 [self beginGame];
-            }
+            } else if (_state == GameStateWaitingForNextTurn)
+			{
+				NSLog(@"server received next turn ready in from client '%@'", player.name);
+                if ([self receivedResponsesFromAllPlayer]){
+                    _state = GameStatePlaying;
+                    NSLog(@"All clients are ready for next turn.");
+                    [self activateNextPlayer];
+                }
+			}
             break;
         case PacketTypeClientDeckSetupResponse:
                 if ([self receivedResponsesFromAllPlayer]){
@@ -644,11 +780,13 @@
                     [self sendPacketToAllClients:packet];
                 }
             break;
-        case PacketTypeClientTurnedCard:
-            NSLog(@"client turned card");
-            if (_state == GameStatePlaying && player == [self activePlayer]){
-                NSLog(@"go turn card");
-                [self turnCardForActivePlayer];
+        case PacketTypeClientTurnEnded:
+            NSLog(@"activate next player since turn is over");
+            if (_state == GameStatePlaying){
+                _state = GameStateWaitingForNextTurn;
+                [self handleTurnEnded];
+                Packet *packet = [PacketTurnEnded packetWithPlayers:_players];
+                [self sendPacketToAllClients:packet];
             }
             break;
         case PacketTypeClientQuit:
@@ -678,8 +816,30 @@
             }
             break;
         case PacketTypeOpenVoting:
+            NSLog(@"open voting packet");
             if(_state == GameStatePlaying){
+                NSLog(@"Open voting");
                 [self sendAnswersToVote];
+            }
+
+            break;
+        case PacketTypeVoteSubmitted:
+            if (_state == GameStatePlaying){
+                Player *tempPlayer = [self playerWithPeerID:player.peerID];
+                tempPlayer.hasVoted = YES;
+                NSLog(@"recieved vote to server from player:%@",player.name);
+                [self addVoteForPlayer:((PacketClientSubmitVote *)packet).peerID];
+                if([self allPlayersHaveVoted]){
+                    NSLog(@"all votes in");
+                    if([_serverPeerID isEqualToString:[self activePlayer].peerID]){
+                        NSLog(@"WE ARE THE SERVER AND ACTIVE");
+                        [self.delegate game:self allVotesSubmitted:_tempPointsArray];
+                    } else {
+                        Packet *newpacket = [PacketServerSendVotes packetWithVotes:_tempPointsArray];
+                        [self sendPacketToPeer:newpacket peerID:[self activePlayer].peerID];
+                    }
+
+                }
             }
 
             break;

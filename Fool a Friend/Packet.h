@@ -32,6 +32,9 @@ typedef enum
 	PacketTypeAllLiesRead,              // client to server
     PacketTypeOpenVoting,               // server to clients to start voting
     PacketTypeVoteSubmitted,          // client to server with vote.
+    PacketTypeAllVotesSubmitted,    // server to active client
+    PacketTypeClientTurnEnded,
+    PacketTypeServerTurnEnded,
     
     
 	PacketTypeOtherClientQuit,         // server to client

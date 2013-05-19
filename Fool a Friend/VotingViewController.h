@@ -14,12 +14,14 @@
 @protocol VotingViewControllerDelegate <NSObject>
 
 -(void)playerDidAnswer:(NSString *)answer;
+-(void)userVotedForPeer:(NSString *)peerID;
 
 @end
-@interface VotingViewController : UIViewController{
+@interface VotingViewController : UIViewController<ResultsViewControllerDelegate>{
     Card *_card;
     NSArray *_answers;
     ResultsViewController *_resultsViewController;
+    NSString *_selectedAnswer;
 }
 
 
@@ -31,5 +33,8 @@
 - (IBAction)submitLieAction:(id)sender;
 -(void)loadAnswers:(NSArray *)answers;
 -(void)revealAnswers;
+- (IBAction)voteAction:(id)sender;
+-(void) gameTurnEnded:(void (^) (BOOL finished))completion;
 
+@property (weak, nonatomic) IBOutlet UIButton *voteButton;
 @end

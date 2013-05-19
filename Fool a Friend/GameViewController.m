@@ -51,9 +51,14 @@
         int YOffset = ((labelHeight+labelPadding) * idx);
         NSLog(@"adding label %@", player.name);
         UIView *playerNameView = [[UIView alloc] initWithFrame:CGRectMake(10, 10 + YOffset, 100, labelHeight)];
+        if ([player.peerID isEqualToString:self.game.currentUser.peerID]){
+            playerNameView.backgroundColor = [UIColor yellowColor];
+        }
         UILabel *playerName = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 80, playerNameView.bounds.size.height)];
+        playerName.backgroundColor = [UIColor clearColor];
         playerName.text = player.name;
         UILabel *playerPoints = [[UILabel alloc] initWithFrame:CGRectMake(80, 0, 20, playerNameView.bounds.size.height)];
+        playerPoints.backgroundColor = [UIColor clearColor];
         playerPoints.text = [NSString stringWithFormat:@"%i", player.points];
         [playerNameView addSubview:playerName];
         [playerNameView addSubview:playerPoints];
@@ -144,9 +149,42 @@
     [_liarViewController loadAnswers:answers];
 }
 
+-(void)game:(Game *)game allVotesSubmitted:(NSArray *)votes
+{
+    [_readerViewController updateVotes:votes];
+    NSLog(@"votes from game view controller %@", votes);
+}
+
 -(void)revealAnswersForVoting
 {
     [_liarViewController revealAnswers];
+}
+-(void)gameTurnEnded
+{
+    // Do gameboard animation update
+    if (nil != _liarViewController){
+        [_liarViewController gameTurnEnded:^(BOOL finished){
+            _liarViewController = nil;
+        }];
+    }
+    if (nil != _readerViewController){
+        [_readerViewController gameTurnEnded:^(BOOL finished){
+            _readerViewController = nil;
+        }];
+    }
+    
+    [_nameLabels enumerateKeysAndObjectsUsingBlock:^(NSString *key, UIView *obj, BOOL *stop) {
+        [obj removeFromSuperview];
+    }];
+    [_nameLabels removeAllObjects];
+    
+    [self addPlayerLabels];
+    
+    // Move into the finish method for the animations
+    
+    [self.game clientReadyForNextTurn];
+    
+
 }
 
 #pragma mark - cardviewcontroller
@@ -159,12 +197,19 @@
     NSLog(@"go vote from game view");
     [self.game sendAnswersToVote];
 }
-
+-(void) beginNextRound
+{
+    [self.game beginNextRound];
+}
 #pragma mark - votingViewController
 
 -(void)playerDidAnswer:(NSString *)answer
 {
     [self.game playerDidAnswer:answer];
+}
+-(void)userVotedForPeer:(NSString *)peerID
+{
+    [self.game userVotedForPeer:peerID];
 }
 
 #pragma mark - Sounds

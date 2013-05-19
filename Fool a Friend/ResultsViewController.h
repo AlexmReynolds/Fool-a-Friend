@@ -12,10 +12,16 @@
 @protocol ResultsViewControllerDelegate <NSObject>
 
 -(void)sendAnswersToVote;
+-(void)userVotedForPeer:(NSString *)peerID;
+-(void)beginNextRound;
 
 @end
 @interface ResultsViewController : UIViewController{
     UIButton *_goVoteButton;
+    UIButton *_showPlayerNamesButton;
+    NSString *_selectedAnswer;
+    NSArray *_votes;
+    BOOL _showPlayerNames;
 }
 
 @property (nonatomic, strong) NSArray *answers;
@@ -27,4 +33,5 @@
 @property (weak, nonatomic) id <ResultsViewControllerDelegate> delegate;
 
 -(void) showAnswers;
+-(void) updateVotes:(NSArray *)votes;
 @end

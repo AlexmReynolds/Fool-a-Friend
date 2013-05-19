@@ -15,6 +15,9 @@
 #import "PacketActivatePlayer.h"
 #import "PacketClientLieResponse.h"
 #import "PacketServerSendAnswers.h"
+#import "PacketClientSubmitVote.h"
+#import "PacketServerSendVotes.h"
+#import "PacketTurnEnded.h"
 
 @implementation Packet
 
@@ -52,6 +55,7 @@ const size_t PACKET_HEADER_SIZE = 10;
         case PacketTypeCardRead:
         case PacketTypeClientTurnedCard:
         case PacketTypeOpenVoting:
+        case PacketTypeClientTurnEnded:
             packet = [Packet packetWithType:packetType];
             break;
         case PacketTypeSignInResponse:
@@ -73,6 +77,15 @@ const size_t PACKET_HEADER_SIZE = 10;
             break;
         case PacketTypeAllAnswersSubmitted:
             packet = [PacketServerSendAnswers packetWithData:data];
+            break;
+        case PacketTypeVoteSubmitted:
+            packet = [PacketClientSubmitVote packetWithData:data];
+            break;
+        case PacketTypeAllVotesSubmitted:
+            packet = [PacketServerSendVotes packetWithData:data];
+            break;
+        case PacketTypeServerTurnEnded:
+            packet = [PacketTurnEnded packetWithData:data];
             break;
         default:
             NSLog(@"Error: packet has invalid type");

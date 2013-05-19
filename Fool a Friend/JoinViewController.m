@@ -109,12 +109,14 @@
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if(_matchmakingClient != nil){
+    if(_matchmakingClient != nil && !_hostSelected){
         self.waitView.hidden = NO;
         NSString *peerID = [_matchmakingClient peerIDForAvailableServerAtIndex:indexPath.row];
         [_matchmakingClient connectToServerWithPeerID:peerID];
     }
+    _hostSelected = YES;
 }
 - (BOOL)textFieldShouldReturn:(UITextField *)textfield{
     [textfield resignFirstResponder];

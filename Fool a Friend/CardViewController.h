@@ -15,11 +15,14 @@
 
 -(void)sendQuestionToClients:(Card *)card;
 -(void)sendAnswersToVote;
+-(void)beginNextRound;
 
 @end
 @interface CardViewController : UIViewController<ResultsViewControllerDelegate>{
     Card *_card;
+    NSArray *_votes;
     NSArray *_answers;
+    BOOL _showPlayerNames;
     ResultsViewController *_resultsViewController;
 }
 @property (weak, nonatomic) IBOutlet UIButton *showPlayerNamesButton;
@@ -32,7 +35,8 @@
 - (IBAction)startAnswersAction:(id)sender;
 - (IBAction)toggleAnswerPlayerNames:(id)sender;
 - (IBAction)openVotingAction:(id)sender;
-
+-(void) gameTurnEnded:(void (^) (BOOL finished))completion;
 -(void)loadCard:(Card *)card;
 -(void)loadAnswers:(NSArray *)answers;
+-(void)updateVotes:(NSArray *)votes;
 @end

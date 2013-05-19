@@ -17,6 +17,7 @@ typedef enum
 	GameStateDealing,
 	GameStatePlaying,
     GameStateMakingLies,
+    GameStateWaitingForNextTurn,
 	GameStateGameOver,
 	GameStateQuitting,
 }
@@ -38,11 +39,14 @@ GameState;
 -(void)game:(Game *)game loadAnswersForReader:(NSArray *)answers;
 -(void)game:(Game *)game loadAnswersForLiars:(NSArray *)answers;
 -(void)revealAnswersForVoting;
+-(void)game:(Game *)game allVotesSubmitted:(NSArray *)votes;
+-(void)gameTurnEnded;
 
 @end
 
 @interface Game : NSObject<GKSessionDelegate>{
     NSMutableDictionary *_players;
+    NSMutableArray *_tempPointsArray;
     BOOL _firstTime;
     BOOL _busyDealing;
     BOOL _hasTurnedCard;
@@ -67,8 +71,11 @@ GameState;
 -(void)startClientGameWithSession:(GKSession *)session playerName:(NSString *)name server:(NSString *)peerID;
 -(void)startServerGameWithSession:(GKSession *)session playerName:(NSString *)name clients:(NSArray *)clients;
 -(void)beginRound;
+-(void)beginNextRound;
 -(void)drawCardForActivePlayer;
 -(void)sendQuestionToClients:(Card *)card;
 -(void)playerDidAnswer:(NSString *)answer;
 -(void)sendAnswersToVote;
+-(void)userVotedForPeer:(NSString *)peerID;
+-(void)clientReadyForNextTurn;
 @end

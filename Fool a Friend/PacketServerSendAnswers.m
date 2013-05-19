@@ -33,9 +33,11 @@
         offset += count;
         NSString *name = [data ar_stringAtOffset:offset bytesRead:&count];
         offset += count;
+        NSString *peerID = [data ar_stringAtOffset:offset bytesRead:&count];
+        offset += count;
         
         NSLog(@"answer from packet is %@", answer);
-        [array addObject:[NSDictionary dictionaryWithObjectsAndKeys:answer,@"answer",name,@"name", nil]];
+        [array addObject:[NSDictionary dictionaryWithObjectsAndKeys:answer,@"answer",name,@"name", peerID, @"peerID", nil]];
     }
 	return [[self class] packetWithAnswers:array];
 }
@@ -46,6 +48,7 @@
     for (NSDictionary *response in self.answers){
         [data ar_appendString:[response valueForKey:@"answer"]];
         [data ar_appendString:[response valueForKey:@"name"]];
+        [data ar_appendString:[response valueForKey:@"peerID"]];
     }
 
 }

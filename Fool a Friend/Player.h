@@ -14,6 +14,7 @@
 @property (nonatomic,strong,readonly) Stack *openCards;
 @property (nonatomic) int points;
 @property (nonatomic) BOOL receivedResponse;
+@property (nonatomic) BOOL hasVoted;
 @property (nonatomic,strong) NSString *answer;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *peerID;

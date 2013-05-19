@@ -71,6 +71,7 @@
     NSAssert([self cardsRemaining] > 0, @"No more cards in deck");
     Card *card = [_cards lastObject];
     [_cards removeLastObject];
+    [_cards insertObject:card atIndex:0];
     return card;
 }
 -(int)cardsRemaining

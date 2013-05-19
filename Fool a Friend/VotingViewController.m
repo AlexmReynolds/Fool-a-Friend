@@ -64,6 +64,7 @@
     [self setQuestionLabel:nil];
     [self setAnswerTextView:nil];
     [self setIpadTheTableView:nil];
+    [self setVoteButton:nil];
     [super viewDidUnload];
 }
 - (IBAction)submitLieAction:(id)sender {
@@ -74,6 +75,7 @@
     }
     if (!isIpad()){
         _resultsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"resultsViewController"];
+        _resultsViewController.delegate = self;
         [self presentViewController:_resultsViewController animated:YES completion:nil];
     }
 
@@ -93,6 +95,28 @@
         [self.ipadTheTableView reloadData];
     } else {
         [_resultsViewController showAnswers];
+    }
+}
+
+- (IBAction)voteAction:(id)sender {
+    self.voteButton.enabled = NO;
+    NSLog(@"voted for %@", _selectedAnswer);
+    [self.delegate userVotedForPeer:_selectedAnswer];
+}
+-(void) userVotedForPeer:(NSString *)peerID
+{
+    NSLog(@"voted for peer voting view controller");
+    [self.delegate userVotedForPeer:peerID];
+    
+}
+-(void) gameTurnEnded:(void (^) (BOOL finished))completion
+{
+    if (nil != _resultsViewController){
+        [_resultsViewController dismissViewControllerAnimated:NO completion:nil];
+    }
+    [self dismissViewControllerAnimated:NO completion:nil];
+    if (completion){
+        completion(YES);
     }
 }
 #pragma mark - UITextField Delegate
@@ -128,9 +152,9 @@
     return cell;
 }
 - (NSIndexPath *) tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    return nil;
+    return indexPath;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-
+    _selectedAnswer = [[_answers objectAtIndex:indexPath.row] objectForKey:@"peerID"];
 }
 @end

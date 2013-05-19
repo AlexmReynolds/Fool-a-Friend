@@ -17,6 +17,7 @@
 @synthesize openCards = _openCards;
 @synthesize lastPacketNumberReceived = _lastPacketNumberReceived;
 @synthesize position = _position;
+@synthesize hasVoted = _hasVoted;
 -(id) init
 {
     self =[super init];
