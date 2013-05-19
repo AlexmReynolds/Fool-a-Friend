@@ -178,9 +178,12 @@
 -(void)beginNextRound
 {
     if (self.isServer){
+        // run points and send updated players to clients
+        [self tabulatePointsForTurn];
         Packet *packet = [PacketTurnEnded packetWithPlayers:_players];
         [self sendPacketToAllClients:packet];
         _state = GameStateWaitingForNextTurn;
+        [self handleTurnEnded];
     } else {
         Packet *packet = [Packet packetWithType:PacketTypeClientTurnEnded];
         [self sendPacketToServer:packet];
@@ -250,18 +253,46 @@
 {
     [self.delegate game:self allVotesSubmitted:((PacketServerSendVotes *)packet).votes];
 }
+-(void)tabulatePointsForTurn
+{
+    __block BOOL gotRightAnswer = NO;
+    NSDictionary *tempPlayer = [_players copy];
+    [tempPlayer enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
+        NSString *votedForPeerID = obj.votedForPeerID;
+        Player *votingPlayer = [self playerWithPeerID:obj.peerID];
+        // If the player voted for the real answer they get 2 points
+        if([votedForPeerID isEqualToString:[self activePlayer].peerID]){
+            NSLog(@"player %@ voted for right answer %@",votingPlayer.peerID, votedForPeerID);
+            // they voted for the right answer
+            votingPlayer.points +=2;
+            // We use this to track if the reader gets extra points.
+            gotRightAnswer = YES;
+        } else if ([votedForPeerID isEqualToString:obj.peerID]){
+            NSLog(@"player %@ voted for self answer %@",votingPlayer.peerID, votedForPeerID);
+            // They voted for themselves. NO POINTS
+        }else {
+            NSLog(@"player %@ voted for lie answer %@",votingPlayer.peerID, votedForPeerID);
+            Player *votedForPlayer = [self playerWithPeerID:votedForPeerID];
+            votedForPlayer.points += 1;
+            // they voted for someones lie
+        }
+        // Also reset their info for next round;
+        votingPlayer.answer = nil;
+        votingPlayer.hasVoted = NO;
+        votingPlayer.votedForPeerID = nil;
+    }];
+    // Now check if reader gets extra points
+    
+    if (!gotRightAnswer){
+        NSLog(@"noone got answe");
+        Player *active = [self activePlayer];
+        active.points +=3;
+    }
+}
 -(void)handleTurnEnded
 {
     if (self.isServer){
         NSLog(@"clear old answers");
-        for (NSDictionary *votes in _tempPointsArray){
-            Player *player = [self playerWithPeerID:[votes objectForKey:@"peerID"]];
-            player.points += [[votes objectForKey:@"votes"] intValue];
-        }
-        [_players enumerateKeysAndObjectsUsingBlock:^(id key, Player *obj, BOOL *stop) {
-            obj.hasVoted = NO;
-            obj.answer = nil;
-        }];
         [_tempPointsArray removeAllObjects];
     }
     [self.delegate gameTurnEnded];
@@ -376,7 +407,7 @@
     if(self.isServer){
         Player *_server = [self playerWithPeerID:_serverPeerID];
         _server.hasVoted = YES;
-        [self addVoteForPlayer:peerID];
+        [self addVoteForPlayer:currentUser.peerID forPeer:peerID];
         if ([self allPlayersHaveVoted]){
             NSLog(@"all votes in send to player");
             Packet *packet = [PacketServerSendVotes packetWithVotes:_tempPointsArray];
@@ -389,8 +420,11 @@
     
 }
 
--(void) addVoteForPlayer:(NSString *)peerID
+-(void) addVoteForPlayer:(NSString *)playerPeerID forPeer:(NSString *)peerID
 {
+    Player *player = [self playerWithPeerID:playerPeerID];
+    player.votedForPeerID = peerID;
+    
     NSMutableArray *tempArry = [_tempPointsArray copy];
     int idx = 0;
     BOOL found = NO;
@@ -784,6 +818,7 @@
             NSLog(@"activate next player since turn is over");
             if (_state == GameStatePlaying){
                 _state = GameStateWaitingForNextTurn;
+                [self tabulatePointsForTurn];
                 [self handleTurnEnded];
                 Packet *packet = [PacketTurnEnded packetWithPlayers:_players];
                 [self sendPacketToAllClients:packet];
@@ -828,7 +863,7 @@
                 Player *tempPlayer = [self playerWithPeerID:player.peerID];
                 tempPlayer.hasVoted = YES;
                 NSLog(@"recieved vote to server from player:%@",player.name);
-                [self addVoteForPlayer:((PacketClientSubmitVote *)packet).peerID];
+                [self addVoteForPlayer:player.peerID forPeer:((PacketClientSubmitVote *)packet).peerID];
                 if([self allPlayersHaveVoted]){
                     NSLog(@"all votes in");
                     if([_serverPeerID isEqualToString:[self activePlayer].peerID]){

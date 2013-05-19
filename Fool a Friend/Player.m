@@ -26,6 +26,7 @@
         _points = 0;
         _closedCards = [[Stack alloc] init];
         _openCards = [[Stack alloc] init];
+        _votedForPeerID = @"";
     }
     return self;
 }

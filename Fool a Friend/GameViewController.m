@@ -110,7 +110,7 @@
 -(void)game:(Game *)game didActivatePlayer:(Player *)player
 {
     NSLog(@"current use peerid %@ and active player peerid %@", game.currentUser.peerID, player.peerID);
-    if (game.currentUser.peerID == player.peerID){
+    if ([game.currentUser.peerID isEqualToString:player.peerID]){
         self.centerLabel.text = @"Your Turn";
         
     } else {

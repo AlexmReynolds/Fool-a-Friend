@@ -18,6 +18,7 @@
 @property (nonatomic,strong) NSString *answer;
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, copy) NSString *peerID;
+@property (nonatomic, strong) NSString *votedForPeerID;
 @property (nonatomic, assign) int position;
 -(Card*)turnOverTopCard;
 -(BOOL)shouldRecycle;

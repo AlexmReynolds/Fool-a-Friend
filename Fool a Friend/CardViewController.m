@@ -78,7 +78,6 @@
 -(void) goNextRound
 {
     [self.delegate beginNextRound];
-    [self dismissViewControllerAnimated:NO completion:nil];
 }
 -(void)beginNextRound
 {

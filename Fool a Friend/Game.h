@@ -47,6 +47,7 @@ GameState;
 @interface Game : NSObject<GKSessionDelegate>{
     NSMutableDictionary *_players;
     NSMutableArray *_tempPointsArray;
+    
     BOOL _firstTime;
     BOOL _busyDealing;
     BOOL _hasTurnedCard;
